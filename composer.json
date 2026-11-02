@@ -42,5 +42,13 @@
 		"vendor-dir": "packages",
 		"platform-check": false,
 		"optimize-autoloader": true
+	},
+	"require-dev": {
+		"phpunit/phpunit": "^13.4"
+	},
+	"scripts": {
+		"test": "packages/bin/phpunit --testdox",
+		"coverage": "XDEBUG_MODE=coverage packages/bin/phpunit --coverage-text",
+		"coverage:html": "XDEBUG_MODE=coverage packages/bin/phpunit --coverage-html build/coverage"
 	}
 }
