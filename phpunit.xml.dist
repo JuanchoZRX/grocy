@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/13.4/phpunit.xsd"
+		 bootstrap="tests/bootstrap.php"
+		 cacheDirectory=".phpunit.cache"
+		 colors="true">
+
+	<testsuites>
+		<testsuite name="services">
+			<directory>tests/Unit/Services</directory>
+		</testsuite>
+	</testsuites>
+
+	<!-- Cobertura: solo se mide lo que está en services/ -->
+	<source>
+		<include>
+			<directory suffix=".php">services</directory>
+		</include>
+	</source>
+</phpunit>

@@ -2,3 +2,6 @@ embedded.txt
 /.release
 /packages
 /public/packages
+/build
+/.phpunit.cache
+/tests/.tmp
