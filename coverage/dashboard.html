@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard for C:\Paulo_U\Estadistica para ciencia de datos\Semana 2\Informes\Lab2Qa\grocy\services</title>
+  <link rel="stylesheet" href="_css/style.css?v=14.5.1">
+  <link rel="stylesheet" href="_css/custom.css">
+ </head>
+ <body>
+  <header class="masthead">
+   <nav aria-label="Breadcrumb">
+    <ol class="breadcrumbs">
+     <li><a href="index.html">C:\Paulo_U\Estadistica para ciencia de datos\Semana 2\Informes\Lab2Qa\grocy\services</a></li>
+     <li class="current">Dashboard</li>
+    </ol>
+   </nav>
+   <ul class="tabs">
+    <li><a href="index.html" aria-current="page">Files</a></li>
+    <li><a href="_classes/dashboard.html">Classes</a></li>
+   </ul>
+  </header>
+  <main class="dashboard">
+   <section>
+    <h2>Classes</h2>
+    <div class="panel">
+     <div class="chart">
+      <p class="hint">Line coverage against cyclomatic complexity. Bubble size is the number of executable lines; hover for details, click to navigate.</p>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet">
+ <style>
+  .bubble-success { fill: var(--coverage-success-bar); opacity: 0.7; }
+  .bubble-warning { fill: var(--coverage-warning-bar); opacity: 0.7; }
+  .bubble-danger { fill: var(--coverage-danger-bar); opacity: 0.7; }
+  .bubble-success:hover, .bubble-warning:hover, .bubble-danger:hover { opacity: 1; stroke: var(--text); stroke-width: 1.5; }
+  .chart-grid { stroke: var(--border); stroke-width: 0.5; stroke-dasharray: 4,4; opacity: 0.5; }
+  .chart-axis { stroke: var(--border); stroke-width: 1; }
+  .chart-label { fill: var(--text); font-size: 11px; font-family: var(--font-sans); }
+  .chart-title { fill: var(--text); font-size: 12px; font-family: var(--font-sans); }
+ </style>
+ <line x1="60.0" y1="20" x2="60.0" y2="350" class="chart-grid"/>
+ <text x="60.0" y="368" text-anchor="middle" class="chart-label">0%</text>
+ <line x1="204.0" y1="20" x2="204.0" y2="350" class="chart-grid"/>
+ <text x="204.0" y="368" text-anchor="middle" class="chart-label">20%</text>
+ <line x1="348.0" y1="20" x2="348.0" y2="350" class="chart-grid"/>
+ <text x="348.0" y="368" text-anchor="middle" class="chart-label">40%</text>
+ <line x1="492.0" y1="20" x2="492.0" y2="350" class="chart-grid"/>
+ <text x="492.0" y="368" text-anchor="middle" class="chart-label">60%</text>
+ <line x1="636.0" y1="20" x2="636.0" y2="350" class="chart-grid"/>
+ <text x="636.0" y="368" text-anchor="middle" class="chart-label">80%</text>
+ <line x1="780.0" y1="20" x2="780.0" y2="350" class="chart-grid"/>
+ <text x="780.0" y="368" text-anchor="middle" class="chart-label">100%</text>
+ <line x1="60" y1="350.0" x2="780" y2="350.0" class="chart-grid"/>
+ <text x="52" y="350.0" text-anchor="end" dominant-baseline="middle" class="chart-label">0</text>
+ <line x1="60" y1="240.0" x2="780" y2="240.0" class="chart-grid"/>
+ <text x="52" y="240.0" text-anchor="end" dominant-baseline="middle" class="chart-label">100</text>
+ <line x1="60" y1="130.0" x2="780" y2="130.0" class="chart-grid"/>
+ <text x="52" y="130.0" text-anchor="end" dominant-baseline="middle" class="chart-label">200</text>
+ <line x1="60" y1="20.0" x2="780" y2="20.0" class="chart-grid"/>
+ <text x="52" y="20.0" text-anchor="end" dominant-baseline="middle" class="chart-label">300</text>
+ <line x1="60" y1="20" x2="60" y2="350" class="chart-axis"/>
+ <line x1="60" y1="350" x2="780" y2="350" class="chart-axis"/>
+ <text x="420.0" y="395" text-anchor="middle" class="chart-title">Line Coverage (%)</text>
+ <text x="15" y="185.0" text-anchor="middle" transform="rotate(-90, 15, 185.0)" class="chart-title">Cyclomatic Complexity</text>
+ <a href="StockService.php.html#9"><circle cx="60.0" cy="68.4" r="20.0" class="bubble-danger"><title>Grocy\Services\StockService — Coverage: 0.0% | Lines: 995 | Complexity: 256</title></circle></a>
+ <a href="DemoDataGeneratorService.php.html#5"><circle cx="60.0" cy="330.2" r="11.8" class="bubble-danger"><title>Grocy\Services\DemoDataGeneratorService — Coverage: 0.0% | Lines: 347 | Complexity: 18</title></circle></a>
+ <a href="ChoresService.php.html#5"><circle cx="60.0" cy="304.9" r="7.2" class="bubble-danger"><title>Grocy\Services\ChoresService — Coverage: 0.0% | Lines: 129 | Complexity: 41</title></circle></a>
+ <a href="CalendarService.php.html#7"><circle cx="60.0" cy="325.8" r="7.0" class="bubble-danger"><title>Grocy\Services\CalendarService — Coverage: 0.0% | Lines: 123 | Complexity: 22</title></circle></a>
+ <a href="LocalizationService.php.html#9"><circle cx="60.0" cy="312.6" r="5.6" class="bubble-danger"><title>Grocy\Services\LocalizationService — Coverage: 0.0% | Lines: 78 | Complexity: 34</title></circle></a>
+ <a href="UsersService.php.html#7"><circle cx="60.0" cy="326.9" r="5.5" class="bubble-danger"><title>Grocy\Services\UsersService — Coverage: 0.0% | Lines: 76 | Complexity: 21</title></circle></a>
+ <a href="RecipesService.php.html#7"><circle cx="60.0" cy="321.4" r="5.3" class="bubble-danger"><title>Grocy\Services\RecipesService — Coverage: 0.0% | Lines: 71 | Complexity: 26</title></circle></a>
+ <a href="DatabaseService.php.html#8"><circle cx="352.9" cy="323.6" r="4.9" class="bubble-danger"><title>Grocy\Services\DatabaseService — Coverage: 40.7% | Lines: 59 | Complexity: 24</title></circle></a>
+ <a href="ApplicationService.php.html#5"><circle cx="233.8" cy="336.8" r="4.8" class="bubble-danger"><title>Grocy\Services\ApplicationService — Coverage: 24.1% | Lines: 58 | Complexity: 12</title></circle></a>
+ <a href="UserfieldsService.php.html#5"><circle cx="60.0" cy="326.9" r="4.5" class="bubble-danger"><title>Grocy\Services\UserfieldsService — Coverage: 0.0% | Lines: 51 | Complexity: 21</title></circle></a>
+ <a href="FilesService.php.html#7"><circle cx="60.0" cy="325.8" r="4.1" class="bubble-danger"><title>Grocy\Services\FilesService — Coverage: 0.0% | Lines: 42 | Complexity: 22</title></circle></a>
+ <a href="SessionService.php.html#5"><circle cx="60.0" cy="337.9" r="4.0" class="bubble-danger"><title>Grocy\Services\SessionService — Coverage: 0.0% | Lines: 38 | Complexity: 11</title></circle></a>
+ <a href="ApiKeyService.php.html#5"><circle cx="60.0" cy="336.8" r="4.0" class="bubble-danger"><title>Grocy\Services\ApiKeyService — Coverage: 0.0% | Lines: 34 | Complexity: 12</title></circle></a>
+ <a href="BatteriesService.php.html#5"><circle cx="60.0" cy="340.1" r="4.0" class="bubble-danger"><title>Grocy\Services\BatteriesService — Coverage: 0.0% | Lines: 34 | Complexity: 9</title></circle></a>
+ <a href="DatabaseMigrationService.php.html#5"><circle cx="60.0" cy="329.1" r="4.0" class="bubble-danger"><title>Grocy\Services\DatabaseMigrationService — Coverage: 0.0% | Lines: 32 | Complexity: 19</title></circle></a>
+ <a href="PrintService.php.html#10"><circle cx="60.0" cy="342.3" r="4.0" class="bubble-danger"><title>Grocy\Services\PrintService — Coverage: 0.0% | Lines: 32 | Complexity: 7</title></circle></a>
+ <a href="TasksService.php.html#7"><circle cx="60.0" cy="340.1" r="4.0" class="bubble-danger"><title>Grocy\Services\TasksService — Coverage: 0.0% | Lines: 29 | Complexity: 9</title></circle></a>
+ <a href="BaseService.php.html#5"><circle cx="204.0" cy="346.7" r="4.0" class="bubble-danger"><title>Grocy\Services\BaseService — Coverage: 20.0% | Lines: 5 | Complexity: 3</title></circle></a>
+</svg>
+     </div>
+     <div>
+      <p class="hint">Sorted by descending <abbr title="Change Risk Anti-Patterns">CRAP</abbr> index.</p>
+      <div class="scrollbox">
+     <table class="crap">
+      <thead>
+       <tr>
+        <th scope="col">Class</th>
+        <th scope="col" class="number"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+        <th scope="col" class="number">Coverage</th>
+       </tr>
+      </thead>
+      <tbody>
+       <tr><td><a href="StockService.php.html#9">Grocy\Services\StockService</a></td><td class="number">65792</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="ChoresService.php.html#5">Grocy\Services\ChoresService</a></td><td class="number">1722</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="LocalizationService.php.html#9">Grocy\Services\LocalizationService</a></td><td class="number">1190</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="RecipesService.php.html#7">Grocy\Services\RecipesService</a></td><td class="number">702</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="CalendarService.php.html#7">Grocy\Services\CalendarService</a></td><td class="number">506</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="FilesService.php.html#7">Grocy\Services\FilesService</a></td><td class="number">506</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="UserfieldsService.php.html#5">Grocy\Services\UserfieldsService</a></td><td class="number">462</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="UsersService.php.html#7">Grocy\Services\UsersService</a></td><td class="number">462</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="DatabaseMigrationService.php.html#5">Grocy\Services\DatabaseMigrationService</a></td><td class="number">380</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="DemoDataGeneratorService.php.html#5">Grocy\Services\DemoDataGeneratorService</a></td><td class="number">342</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="ApiKeyService.php.html#5">Grocy\Services\ApiKeyService</a></td><td class="number">156</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="DatabaseService.php.html#8">Grocy\Services\DatabaseService</a></td><td class="number">144.25</td><td class="number">40.7%</td></tr>
+       <tr><td><a href="SessionService.php.html#5">Grocy\Services\SessionService</a></td><td class="number">132</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="BatteriesService.php.html#5">Grocy\Services\BatteriesService</a></td><td class="number">90</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="TasksService.php.html#7">Grocy\Services\TasksService</a></td><td class="number">90</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="ApplicationService.php.html#5">Grocy\Services\ApplicationService</a></td><td class="number">74.87</td><td class="number">24.1%</td></tr>
+       <tr><td><a href="PrintService.php.html#10">Grocy\Services\PrintService</a></td><td class="number">56</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="BaseService.php.html#5">Grocy\Services\BaseService</a></td><td class="number">7.61</td><td class="number">20.0%</td></tr>
+      </tbody>
+     </table>
+      </div>
+     </div>
+    </div>
+   </section>
+   <section>
+    <h2>Methods</h2>
+    <div class="panel">
+     <div class="chart">
+      <p class="hint">Line coverage against cyclomatic complexity. Bubble size is the number of executable lines; hover for details, click to navigate.</p>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet">
+ <style>
+  .bubble-success { fill: var(--coverage-success-bar); opacity: 0.7; }
+  .bubble-warning { fill: var(--coverage-warning-bar); opacity: 0.7; }
+  .bubble-danger { fill: var(--coverage-danger-bar); opacity: 0.7; }
+  .bubble-success:hover, .bubble-warning:hover, .bubble-danger:hover { opacity: 1; stroke: var(--text); stroke-width: 1.5; }
+  .chart-grid { stroke: var(--border); stroke-width: 0.5; stroke-dasharray: 4,4; opacity: 0.5; }
+  .chart-axis { stroke: var(--border); stroke-width: 1; }
+  .chart-label { fill: var(--text); font-size: 11px; font-family: var(--font-sans); }
+  .chart-title { fill: var(--text); font-size: 12px; font-family: var(--font-sans); }
+ </style>
+ <line x1="60.0" y1="20" x2="60.0" y2="350" class="chart-grid"/>
+ <text x="60.0" y="368" text-anchor="middle" class="chart-label">0%</text>
+ <line x1="204.0" y1="20" x2="204.0" y2="350" class="chart-grid"/>
+ <text x="204.0" y="368" text-anchor="middle" class="chart-label">20%</text>
+ <line x1="348.0" y1="20" x2="348.0" y2="350" class="chart-grid"/>
+ <text x="348.0" y="368" text-anchor="middle" class="chart-label">40%</text>
+ <line x1="492.0" y1="20" x2="492.0" y2="350" class="chart-grid"/>
+ <text x="492.0" y="368" text-anchor="middle" class="chart-label">60%</text>
+ <line x1="636.0" y1="20" x2="636.0" y2="350" class="chart-grid"/>
+ <text x="636.0" y="368" text-anchor="middle" class="chart-label">80%</text>
+ <line x1="780.0" y1="20" x2="780.0" y2="350" class="chart-grid"/>
+ <text x="780.0" y="368" text-anchor="middle" class="chart-label">100%</text>
+ <line x1="60" y1="350.0" x2="780" y2="350.0" class="chart-grid"/>
+ <text x="52" y="350.0" text-anchor="end" dominant-baseline="middle" class="chart-label">0</text>
+ <line x1="60" y1="267.5" x2="780" y2="267.5" class="chart-grid"/>
+ <text x="52" y="267.5" text-anchor="end" dominant-baseline="middle" class="chart-label">10</text>
+ <line x1="60" y1="185.0" x2="780" y2="185.0" class="chart-grid"/>
+ <text x="52" y="185.0" text-anchor="end" dominant-baseline="middle" class="chart-label">20</text>
+ <line x1="60" y1="102.5" x2="780" y2="102.5" class="chart-grid"/>
+ <text x="52" y="102.5" text-anchor="end" dominant-baseline="middle" class="chart-label">30</text>
+ <line x1="60" y1="20.0" x2="780" y2="20.0" class="chart-grid"/>
+ <text x="52" y="20.0" text-anchor="end" dominant-baseline="middle" class="chart-label">40</text>
+ <line x1="60" y1="20" x2="60" y2="350" class="chart-axis"/>
+ <line x1="60" y1="350" x2="780" y2="350" class="chart-axis"/>
+ <text x="420.0" y="395" text-anchor="middle" class="chart-title">Line Coverage (%)</text>
+ <text x="15" y="185.0" text-anchor="middle" transform="rotate(-90, 15, 185.0)" class="chart-title">Cyclomatic Complexity</text>
+ <a href="DemoDataGeneratorService.php.html#9"><circle cx="60.0" cy="259.2" r="20.0" class="bubble-danger"><title>Grocy\Services\DemoDataGeneratorService::PopulateDemoData — Coverage: 0.0% | Lines: 330 | Complexity: 11</title></circle></a>
+ <a href="StockService.php.html#1272"><circle cx="60.0" cy="143.8" r="12.8" class="bubble-danger"><title>Grocy\Services\StockService::TransferProduct — Coverage: 0.0% | Lines: 136 | Complexity: 25</title></circle></a>
+ <a href="CalendarService.php.html#17"><circle cx="60.0" cy="176.8" r="12.1" class="bubble-danger"><title>Grocy\Services\CalendarService::GetEvents — Coverage: 0.0% | Lines: 121 | Complexity: 21</title></circle></a>
+ <a href="StockService.php.html#1485"><circle cx="60.0" cy="168.5" r="11.7" class="bubble-danger"><title>Grocy\Services\StockService::UndoBooking — Coverage: 0.0% | Lines: 112 | Complexity: 22</title></circle></a>
+ <a href="StockService.php.html#112"><circle cx="60.0" cy="110.8" r="11.5" class="bubble-danger"><title>Grocy\Services\StockService::AddProduct — Coverage: 0.0% | Lines: 110 | Complexity: 29</title></circle></a>
+ <a href="StockService.php.html#979"><circle cx="60.0" cy="143.8" r="11.4" class="bubble-danger"><title>Grocy\Services\StockService::OpenProduct — Coverage: 0.0% | Lines: 108 | Complexity: 25</title></circle></a>
+ <a href="StockService.php.html#365"><circle cx="60.0" cy="152.0" r="10.1" class="bubble-danger"><title>Grocy\Services\StockService::ConsumeProduct — Coverage: 0.0% | Lines: 84 | Complexity: 24</title></circle></a>
+ <a href="StockService.php.html#526"><circle cx="60.0" cy="308.8" r="8.5" class="bubble-danger"><title>Grocy\Services\StockService::EditStockEntry — Coverage: 0.0% | Lines: 59 | Complexity: 5</title></circle></a>
+ <a href="StockService.php.html#755"><circle cx="60.0" cy="317.0" r="7.9" class="bubble-danger"><title>Grocy\Services\StockService::GetProductDetails — Coverage: 0.0% | Lines: 52 | Complexity: 4</title></circle></a>
+ <a href="LocalizationService.php.html#130"><circle cx="60.0" cy="234.5" r="7.4" class="bubble-danger"><title>Grocy\Services\LocalizationService::LoadLocalizations — Coverage: 0.0% | Lines: 45 | Complexity: 14</title></circle></a>
+ <a href="StockService.php.html#607"><circle cx="60.0" cy="226.2" r="7.0" class="bubble-danger"><title>Grocy\Services\StockService::ExternalBarcodeLookup — Coverage: 0.0% | Lines: 40 | Complexity: 15</title></circle></a>
+ <a href="ChoresService.php.html#19"><circle cx="60.0" cy="226.2" r="6.9" class="bubble-danger"><title>Grocy\Services\ChoresService::CalculateNextExecutionAssignment — Coverage: 0.0% | Lines: 39 | Complexity: 15</title></circle></a>
+ <a href="StockService.php.html#1189"><circle cx="60.0" cy="226.2" r="6.9" class="bubble-danger"><title>Grocy\Services\StockService::GetShoppinglistInPrintableStrings — Coverage: 0.0% | Lines: 39 | Complexity: 15</title></circle></a>
+ <a href="ChoresService.php.html#163"><circle cx="60.0" cy="267.5" r="6.4" class="bubble-danger"><title>Grocy\Services\ChoresService::TrackChore — Coverage: 0.0% | Lines: 34 | Complexity: 10</title></circle></a>
+ <a href="RecipesService.php.html#14"><circle cx="60.0" cy="267.5" r="5.9" class="bubble-danger"><title>Grocy\Services\RecipesService::AddNotFulfilledProductsToShoppingList — Coverage: 0.0% | Lines: 29 | Complexity: 10</title></circle></a>
+ <a href="RecipesService.php.html#80"><circle cx="60.0" cy="267.5" r="5.7" class="bubble-danger"><title>Grocy\Services\RecipesService::ConsumeRecipe — Coverage: 0.0% | Lines: 27 | Complexity: 10</title></circle></a>
+ <a href="ApplicationService.php.html#9"><circle cx="60.0" cy="308.8" r="5.6" class="bubble-danger"><title>Grocy\Services\ApplicationService::GetChangelog — Coverage: 0.0% | Lines: 26 | Complexity: 5</title></circle></a>
+ <a href="StockService.php.html#1685"><circle cx="60.0" cy="300.5" r="5.6" class="bubble-danger"><title>Grocy\Services\StockService::MergeProducts — Coverage: 0.0% | Lines: 26 | Complexity: 6</title></circle></a>
+ <a href="StockService.php.html#915"><circle cx="60.0" cy="259.2" r="5.5" class="bubble-danger"><title>Grocy\Services\StockService::InventoryProduct — Coverage: 0.0% | Lines: 25 | Complexity: 11</title></circle></a>
+ <a href="ChoresService.php.html#104"><circle cx="60.0" cy="308.8" r="5.4" class="bubble-danger"><title>Grocy\Services\ChoresService::GetChoreDetails — Coverage: 0.0% | Lines: 24 | Complexity: 5</title></circle></a>
+ <a href="StockService.php.html#307"><circle cx="60.0" cy="308.8" r="5.0" class="bubble-danger"><title>Grocy\Services\StockService::AddProductToShoppingList — Coverage: 0.0% | Lines: 21 | Complexity: 5</title></circle></a>
+ <a href="DatabaseService.php.html#91"><circle cx="600.0" cy="325.2" r="4.9" class="bubble-warning"><title>Grocy\Services\DatabaseService::GetDbConnectionRaw — Coverage: 75.0% | Lines: 20 | Complexity: 3</title></circle></a>
+ <a href="StockService.php.html#21"><circle cx="60.0" cy="308.8" r="4.9" class="bubble-danger"><title>Grocy\Services\StockService::AddMissingProductsToShoppingList — Coverage: 0.0% | Lines: 20 | Complexity: 5</title></circle></a>
+ <a href="SessionService.php.html#14"><circle cx="60.0" cy="325.2" r="4.8" class="bubble-danger"><title>Grocy\Services\SessionService::CreateToken — Coverage: 0.0% | Lines: 19 | Complexity: 3</title></circle></a>
+ <a href="StockService.php.html#1780"><circle cx="60.0" cy="284.0" r="4.8" class="bubble-danger"><title>Grocy\Services\StockService::CompactStockEntries — Coverage: 0.0% | Lines: 19 | Complexity: 8</title></circle></a>
+ <a href="UserfieldsService.php.html#103"><circle cx="60.0" cy="308.8" r="4.7" class="bubble-danger"><title>Grocy\Services\UserfieldsService::SetValues — Coverage: 0.0% | Lines: 18 | Complexity: 5</title></circle></a>
+ <a href="FilesService.php.html#39"><circle cx="60.0" cy="275.8" r="4.5" class="bubble-danger"><title>Grocy\Services\FilesService::DownscaleImage — Coverage: 0.0% | Lines: 17 | Complexity: 9</title></circle></a>
+ <a href="UsersService.php.html#40"><circle cx="60.0" cy="317.0" r="4.5" class="bubble-danger"><title>Grocy\Services\UsersService::EditUser — Coverage: 0.0% | Lines: 17 | Complexity: 4</title></circle></a>
+ <a href="UsersService.php.html#9"><circle cx="60.0" cy="333.5" r="4.4" class="bubble-danger"><title>Grocy\Services\UsersService::CreateUser — Coverage: 0.0% | Lines: 16 | Complexity: 2</title></circle></a>
+ <a href="ChoresService.php.html#243"><circle cx="60.0" cy="308.8" r="4.3" class="bubble-danger"><title>Grocy\Services\ChoresService::MergeChores — Coverage: 0.0% | Lines: 15 | Complexity: 5</title></circle></a>
+ <a href="DatabaseMigrationService.php.html#13"><circle cx="60.0" cy="300.5" r="4.3" class="bubble-danger"><title>Grocy\Services\DatabaseMigrationService::MigrateDatabase — Coverage: 0.0% | Lines: 15 | Complexity: 6</title></circle></a>
+ <a href="StockService.php.html#1732"><circle cx="60.0" cy="333.5" r="4.3" class="bubble-danger"><title>Grocy\Services\StockService::CopyProduct — Coverage: 0.0% | Lines: 15 | Complexity: 2</title></circle></a>
+ <a href="UsersService.php.html#122"><circle cx="60.0" cy="325.2" r="4.3" class="bubble-danger"><title>Grocy\Services\UsersService::SetUserSetting — Coverage: 0.0% | Lines: 15 | Complexity: 3</title></circle></a>
+ <a href="DatabaseService.php.html#26"><circle cx="60.0" cy="292.2" r="4.1" class="bubble-danger"><title>Grocy\Services\DatabaseService::ExecuteDbStatement — Coverage: 0.0% | Lines: 14 | Complexity: 7</title></circle></a>
+ <a href="PrintService.php.html#12"><circle cx="60.0" cy="317.0" r="4.1" class="bubble-danger"><title>Grocy\Services\PrintService::printShoppingList — Coverage: 0.0% | Lines: 14 | Complexity: 4</title></circle></a>
+ <a href="PrintService.php.html#52"><circle cx="60.0" cy="341.8" r="4.1" class="bubble-danger"><title>Grocy\Services\PrintService::printHeader — Coverage: 0.0% | Lines: 14 | Complexity: 1</title></circle></a>
+ <a href="StockService.php.html#60"><circle cx="60.0" cy="317.0" r="4.1" class="bubble-danger"><title>Grocy\Services\StockService::AddOverdueProductsToShoppingList — Coverage: 0.0% | Lines: 14 | Complexity: 4</title></circle></a>
+ <a href="StockService.php.html#86"><circle cx="60.0" cy="317.0" r="4.1" class="bubble-danger"><title>Grocy\Services\StockService::AddExpiredProductsToShoppingList — Coverage: 0.0% | Lines: 14 | Complexity: 4</title></circle></a>
+ <a href="UsersService.php.html#71"><circle cx="60.0" cy="308.8" r="4.0" class="bubble-danger"><title>Grocy\Services\UsersService::GetUserSetting — Coverage: 0.0% | Lines: 13 | Complexity: 5</title></circle></a>
+ <a href="BatteriesService.php.html#7"><circle cx="60.0" cy="333.5" r="4.0" class="bubble-danger"><title>Grocy\Services\BatteriesService::GetBatteryDetails — Coverage: 0.0% | Lines: 12 | Complexity: 2</title></circle></a>
+ <a href="StockService.php.html#843"><circle cx="60.0" cy="325.2" r="4.0" class="bubble-danger"><title>Grocy\Services\StockService::GetProductPriceHistory — Coverage: 0.0% | Lines: 12 | Complexity: 3</title></circle></a>
+ <a href="StockService.php.html#1828"><circle cx="60.0" cy="308.8" r="4.0" class="bubble-danger"><title>Grocy\Services\StockService::LoadExternalBarcodeLookupPlugin — Coverage: 0.0% | Lines: 12 | Complexity: 5</title></circle></a>
+ <a href="ApiKeyService.php.html#67"><circle cx="60.0" cy="317.0" r="4.0" class="bubble-danger"><title>Grocy\Services\ApiKeyService::IsValidApiKey — Coverage: 0.0% | Lines: 11 | Complexity: 4</title></circle></a>
+ <a href="ApplicationService.php.html#62"><circle cx="780.0" cy="341.8" r="4.0" class="bubble-success"><title>Grocy\Services\ApplicationService::GetSystemInfo — Coverage: 100.0% | Lines: 11 | Complexity: 1</title></circle></a>
+ <a href="ApplicationService.php.html#98"><circle cx="60.0" cy="341.8" r="4.0" class="bubble-danger"><title>Grocy\Services\ApplicationService::GetSystemTime — Coverage: 0.0% | Lines: 11 | Complexity: 1</title></circle></a>
+ <a href="DatabaseMigrationService.php.html#60"><circle cx="60.0" cy="292.2" r="4.0" class="bubble-danger"><title>Grocy\Services\DatabaseMigrationService::ExecuteSqlMigrationWhenNeeded — Coverage: 0.0% | Lines: 11 | Complexity: 7</title></circle></a>
+ <a href="FilesService.php.html#11"><circle cx="60.0" cy="300.5" r="4.0" class="bubble-danger"><title>Grocy\Services\FilesService::__construct — Coverage: 0.0% | Lines: 11 | Complexity: 6</title></circle></a>
+ <a href="SessionService.php.html#51"><circle cx="60.0" cy="325.2" r="4.0" class="bubble-danger"><title>Grocy\Services\SessionService::ValidateToken — Coverage: 0.0% | Lines: 11 | Complexity: 3</title></circle></a>
+ <a href="TasksService.php.html#9"><circle cx="60.0" cy="317.0" r="4.0" class="bubble-danger"><title>Grocy\Services\TasksService::GetCurrent — Coverage: 0.0% | Lines: 11 | Complexity: 4</title></circle></a>
+ <a href="UserfieldsService.php.html#76"><circle cx="60.0" cy="317.0" r="4.0" class="bubble-danger"><title>Grocy\Services\UserfieldsService::GetValues — Coverage: 0.0% | Lines: 11 | Complexity: 4</title></circle></a>
+ <a href="ApiKeyService.php.html#10"><circle cx="60.0" cy="341.8" r="4.0" class="bubble-danger"><title>Grocy\Services\ApiKeyService::CreateApiKey — Coverage: 0.0% | Lines: 10 | Complexity: 1</title></circle></a>
+ <a href="DatabaseService.php.html#69"><circle cx="348.0" cy="317.0" r="4.0" class="bubble-danger"><title>Grocy\Services\DatabaseService::GetDbConnection — Coverage: 40.0% | Lines: 10 | Complexity: 4</title></circle></a>
+ <a href="FilesService.php.html#78"><circle cx="60.0" cy="308.8" r="4.0" class="bubble-danger"><title>Grocy\Services\FilesService::DeleteFile — Coverage: 0.0% | Lines: 10 | Complexity: 5</title></circle></a>
+ <a href="StockService.php.html#866"><circle cx="60.0" cy="317.0" r="4.0" class="bubble-danger"><title>Grocy\Services\StockService::GetProductStockEntries — Coverage: 0.0% | Lines: 10 | Complexity: 4</title></circle></a>
+ <a href="StockService.php.html#821"><circle cx="60.0" cy="317.0" r="4.0" class="bubble-danger"><title>Grocy\Services\StockService::GetProductIdFromBarcode — Coverage: 0.0% | Lines: 9 | Complexity: 4</title></circle></a>
+ <a href="StockService.php.html#1163"><circle cx="60.0" cy="300.5" r="4.0" class="bubble-danger"><title>Grocy\Services\StockService::RemoveProductFromShoppingList — Coverage: 0.0% | Lines: 9 | Complexity: 6</title></circle></a>
+ <a href="BatteriesService.php.html#39"><circle cx="60.0" cy="333.5" r="4.0" class="bubble-danger"><title>Grocy\Services\BatteriesService::TrackChargeCycle — Coverage: 0.0% | Lines: 8 | Complexity: 2</title></circle></a>
+ <a href="ChoresService.php.html#226"><circle cx="60.0" cy="333.5" r="4.0" class="bubble-danger"><title>Grocy\Services\ChoresService::UndoChoreExecution — Coverage: 0.0% | Lines: 8 | Complexity: 2</title></circle></a>
+ <a href="RecipesService.php.html#152"><circle cx="60.0" cy="333.5" r="4.0" class="bubble-danger"><title>Grocy\Services\RecipesService::CopyRecipe — Coverage: 0.0% | Lines: 8 | Complexity: 2</title></circle></a>
+ <a href="TasksService.php.html#39"><circle cx="60.0" cy="333.5" r="4.0" class="bubble-danger"><title>Grocy\Services\TasksService::MarkTaskAsCompleted — Coverage: 0.0% | Lines: 8 | Complexity: 2</title></circle></a>
+ <a href="TasksService.php.html#55"><circle cx="60.0" cy="333.5" r="4.0" class="bubble-danger"><title>Grocy\Services\TasksService::UndoTask — Coverage: 0.0% | Lines: 8 | Complexity: 2</title></circle></a>
+ <a href="UserfieldsService.php.html#40"><circle cx="60.0" cy="333.5" r="4.0" class="bubble-danger"><title>Grocy\Services\UserfieldsService::GetEntities — Coverage: 0.0% | Lines: 8 | Complexity: 2</title></circle></a>
+ <a href="BatteriesService.php.html#55"><circle cx="60.0" cy="333.5" r="4.0" class="bubble-danger"><title>Grocy\Services\BatteriesService::UndoChargeCycle — Coverage: 0.0% | Lines: 7 | Complexity: 2</title></circle></a>
+ <a href="ChoresService.php.html#143"><circle cx="60.0" cy="325.2" r="4.0" class="bubble-danger"><title>Grocy\Services\ChoresService::GetCurrent — Coverage: 0.0% | Lines: 7 | Complexity: 3</title></circle></a>
+ <a href="DemoDataGeneratorService.php.html#432"><circle cx="60.0" cy="333.5" r="4.0" class="bubble-danger"><title>Grocy\Services\DemoDataGeneratorService::DownloadFileIfNotAlreadyExists — Coverage: 0.0% | Lines: 7 | Complexity: 2</title></circle></a>
+ <a href="StockService.php.html#692"><circle cx="60.0" cy="333.5" r="4.0" class="bubble-danger"><title>Grocy\Services\StockService::GetCurrentStock — Coverage: 0.0% | Lines: 7 | Complexity: 2</title></circle></a>
+ <a href="ApiKeyService.php.html#34"><circle cx="60.0" cy="325.2" r="4.0" class="bubble-danger"><title>Grocy\Services\ApiKeyService::GetOrCreateApiKey — Coverage: 0.0% | Lines: 6 | Complexity: 3</title></circle></a>
+ <a href="DatabaseMigrationService.php.html#45"><circle cx="60.0" cy="300.5" r="4.0" class="bubble-danger"><title>Grocy\Services\DatabaseMigrationService::ExecutePhpMigrationWhenNeeded — Coverage: 0.0% | Lines: 6 | Complexity: 6</title></circle></a>
+ <a href="DatabaseService.php.html#140"><circle cx="300.0" cy="317.0" r="4.0" class="bubble-danger"><title>Grocy\Services\DatabaseService::GetDbFilePath — Coverage: 33.3% | Lines: 6 | Complexity: 4</title></circle></a>
+ <a href="LocalizationService.php.html#75"><circle cx="60.0" cy="325.2" r="4.0" class="bubble-danger"><title>Grocy\Services\LocalizationService::__n — Coverage: 0.0% | Lines: 6 | Complexity: 3</title></circle></a>
+ <a href="LocalizationService.php.html#94"><circle cx="60.0" cy="325.2" r="4.0" class="bubble-danger"><title>Grocy\Services\LocalizationService::__t — Coverage: 0.0% | Lines: 6 | Complexity: 3</title></circle></a>
+ <a href="UsersService.php.html#103"><circle cx="60.0" cy="333.5" r="4.0" class="bubble-danger"><title>Grocy\Services\UsersService::GetUserSettings — Coverage: 0.0% | Lines: 6 | Complexity: 2</title></circle></a>
+ <a href="BatteriesService.php.html#27"><circle cx="60.0" cy="333.5" r="4.0" class="bubble-danger"><title>Grocy\Services\BatteriesService::GetCurrent — Coverage: 0.0% | Lines: 5 | Complexity: 2</title></circle></a>
+ <a href="DemoDataGeneratorService.php.html#445"><circle cx="60.0" cy="333.5" r="4.0" class="bubble-danger"><title>Grocy\Services\DemoDataGeneratorService::NextSupermarketId — Coverage: 0.0% | Lines: 5 | Complexity: 2</title></circle></a>
+ <a href="LocalizationService.php.html#28"><circle cx="60.0" cy="317.0" r="4.0" class="bubble-danger"><title>Grocy\Services\LocalizationService::CheckAndAddMissingTranslationToPot — Coverage: 0.0% | Lines: 5 | Complexity: 4</title></circle></a>
+ <a href="LocalizationService.php.html#115"><circle cx="60.0" cy="325.2" r="4.0" class="bubble-danger"><title>Grocy\Services\LocalizationService::GetInstance — Coverage: 0.0% | Lines: 5 | Complexity: 3</title></circle></a>
+ <a href="StockService.php.html#348"><circle cx="60.0" cy="325.2" r="4.0" class="bubble-danger"><title>Grocy\Services\StockService::ClearShoppingList — Coverage: 0.0% | Lines: 5 | Complexity: 3</title></circle></a>
+ <a href="StockService.php.html#707"><circle cx="60.0" cy="333.5" r="4.0" class="bubble-danger"><title>Grocy\Services\StockService::GetCurrentStockLocationContent — Coverage: 0.0% | Lines: 5 | Complexity: 2</title></circle></a>
+ <a href="StockService.php.html#742"><circle cx="60.0" cy="333.5" r="4.0" class="bubble-danger"><title>Grocy\Services\StockService::GetMissingProducts — Coverage: 0.0% | Lines: 5 | Complexity: 2</title></circle></a>
+ <a href="StockService.php.html#1670"><circle cx="60.0" cy="325.2" r="4.0" class="bubble-danger"><title>Grocy\Services\StockService::UndoTransaction — Coverage: 0.0% | Lines: 5 | Complexity: 3</title></circle></a>
+ <a href="ApiKeyService.php.html#55"><circle cx="60.0" cy="333.5" r="4.0" class="bubble-danger"><title>Grocy\Services\ApiKeyService::GetUserByApiKey — Coverage: 0.0% | Lines: 4 | Complexity: 2</title></circle></a>
+ <a href="ApplicationService.php.html#85"><circle cx="60.0" cy="333.5" r="4.0" class="bubble-danger"><title>Grocy\Services\ApplicationService::getSqliteLocaltime — Coverage: 0.0% | Lines: 4 | Complexity: 2</title></circle></a>
+ <a href="BaseService.php.html#15"><circle cx="60.0" cy="333.5" r="4.0" class="bubble-danger"><title>Grocy\Services\BaseService::GetInstance — Coverage: 0.0% | Lines: 4 | Complexity: 2</title></circle></a>
+ <a href="DatabaseService.php.html#14"><circle cx="60.0" cy="333.5" r="4.0" class="bubble-danger"><title>Grocy\Services\DatabaseService::ExecuteDbQuery — Coverage: 0.0% | Lines: 4 | Complexity: 2</title></circle></a>
+ <a href="FilesService.php.html#105"><circle cx="60.0" cy="333.5" r="4.0" class="bubble-danger"><title>Grocy\Services\FilesService::GetFilePath — Coverage: 0.0% | Lines: 4 | Complexity: 2</title></circle></a>
+ <a href="PrintService.php.html#39"><circle cx="60.0" cy="333.5" r="4.0" class="bubble-danger"><title>Grocy\Services\PrintService::getPrinterHandle — Coverage: 0.0% | Lines: 4 | Complexity: 2</title></circle></a>
+ <a href="SessionService.php.html#77"><circle cx="60.0" cy="333.5" r="4.0" class="bubble-danger"><title>Grocy\Services\SessionService::GetUserByToken — Coverage: 0.0% | Lines: 4 | Complexity: 2</title></circle></a>
+ <a href="StockService.php.html#899"><circle cx="60.0" cy="333.5" r="4.0" class="bubble-danger"><title>Grocy\Services\StockService::GetProductStockLocations — Coverage: 0.0% | Lines: 4 | Complexity: 2</title></circle></a>
+ <a href="UserfieldsService.php.html#29"><circle cx="60.0" cy="333.5" r="4.0" class="bubble-danger"><title>Grocy\Services\UserfieldsService::GetAllValues — Coverage: 0.0% | Lines: 4 | Complexity: 2</title></circle></a>
+ <a href="UsersService.php.html#149"><circle cx="60.0" cy="333.5" r="4.0" class="bubble-danger"><title>Grocy\Services\UsersService::DeleteUserSetting — Coverage: 0.0% | Lines: 4 | Complexity: 2</title></circle></a>
+ <a href="ApplicationService.php.html#52"><circle cx="780.0" cy="333.5" r="4.0" class="bubble-success"><title>Grocy\Services\ApplicationService::GetInstalledVersion — Coverage: 100.0% | Lines: 3 | Complexity: 2</title></circle></a>
+ <a href="ApplicationService.php.html#78"><circle cx="60.0" cy="341.8" r="4.0" class="bubble-danger"><title>Grocy\Services\ApplicationService::convertToUtc — Coverage: 0.0% | Lines: 3 | Complexity: 1</title></circle></a>
+ <a href="DatabaseService.php.html#130"><circle cx="780.0" cy="333.5" r="4.0" class="bubble-success"><title>Grocy\Services\DatabaseService::GetInstance — Coverage: 100.0% | Lines: 3 | Complexity: 2</title></circle></a>
+ <a href="LocalizationService.php.html#11"><circle cx="60.0" cy="341.8" r="4.0" class="bubble-danger"><title>Grocy\Services\LocalizationService::__construct — Coverage: 0.0% | Lines: 3 | Complexity: 1</title></circle></a>
+ <a href="LocalizationService.php.html#41"><circle cx="60.0" cy="333.5" r="4.0" class="bubble-danger"><title>Grocy\Services\LocalizationService::GetPluralCount — Coverage: 0.0% | Lines: 3 | Complexity: 2</title></circle></a>
+ <a href="LocalizationService.php.html#53"><circle cx="60.0" cy="333.5" r="4.0" class="bubble-danger"><title>Grocy\Services\LocalizationService::GetPluralDefinition — Coverage: 0.0% | Lines: 3 | Complexity: 2</title></circle></a>
+ <a href="RecipesService.php.html#140"><circle cx="60.0" cy="333.5" r="4.0" class="bubble-danger"><title>Grocy\Services\RecipesService::GetRecipesResolved — Coverage: 0.0% | Lines: 3 | Complexity: 2</title></circle></a>
+ <a href="StockService.php.html#725"><circle cx="60.0" cy="333.5" r="4.0" class="bubble-danger"><title>Grocy\Services\StockService::GetDueProducts — Coverage: 0.0% | Lines: 3 | Complexity: 2</title></circle></a>
+ <a href="StockService.php.html#889"><circle cx="60.0" cy="333.5" r="4.0" class="bubble-danger"><title>Grocy\Services\StockService::GetLocationStockEntries — Coverage: 0.0% | Lines: 3 | Complexity: 2</title></circle></a>
+ <a href="UserfieldsService.php.html#66"><circle cx="60.0" cy="333.5" r="4.0" class="bubble-danger"><title>Grocy\Services\UserfieldsService::GetFields — Coverage: 0.0% | Lines: 3 | Complexity: 2</title></circle></a>
+ <a href="UserfieldsService.php.html#139"><circle cx="60.0" cy="333.5" r="4.0" class="bubble-danger"><title>Grocy\Services\UserfieldsService::GetOpenApispec — Coverage: 0.0% | Lines: 3 | Complexity: 2</title></circle></a>
+ <a href="ApiKeyService.php.html#26"><circle cx="60.0" cy="341.8" r="4.0" class="bubble-danger"><title>Grocy\Services\ApiKeyService::GetApiKeyId — Coverage: 0.0% | Lines: 2 | Complexity: 1</title></circle></a>
+ <a href="BatteriesService.php.html#71"><circle cx="60.0" cy="341.8" r="4.0" class="bubble-danger"><title>Grocy\Services\BatteriesService::BatteryExists — Coverage: 0.0% | Lines: 2 | Complexity: 1</title></circle></a>
+ <a href="CalendarService.php.html#9"><circle cx="60.0" cy="341.8" r="4.0" class="bubble-danger"><title>Grocy\Services\CalendarService::__construct — Coverage: 0.0% | Lines: 2 | Complexity: 1</title></circle></a>
+ <a href="ChoresService.php.html#277"><circle cx="60.0" cy="341.8" r="4.0" class="bubble-danger"><title>Grocy\Services\ChoresService::ChoreExists — Coverage: 0.0% | Lines: 2 | Complexity: 1</title></circle></a>
+ <a href="DemoDataGeneratorService.php.html#466"><circle cx="60.0" cy="341.8" r="4.0" class="bubble-danger"><title>Grocy\Services\DemoDataGeneratorService::__n_sql — Coverage: 0.0% | Lines: 2 | Complexity: 1</title></circle></a>
+ <a href="DemoDataGeneratorService.php.html#472"><circle cx="60.0" cy="341.8" r="4.0" class="bubble-danger"><title>Grocy\Services\DemoDataGeneratorService::__t_sql — Coverage: 0.0% | Lines: 2 | Complexity: 1</title></circle></a>
+ <a href="RecipesService.php.html#134"><circle cx="60.0" cy="341.8" r="4.0" class="bubble-danger"><title>Grocy\Services\RecipesService::GetRecipesPosResolved — Coverage: 0.0% | Lines: 2 | Complexity: 1</title></circle></a>
+ <a href="RecipesService.php.html#169"><circle cx="60.0" cy="341.8" r="4.0" class="bubble-danger"><title>Grocy\Services\RecipesService::RecipeExists — Coverage: 0.0% | Lines: 2 | Complexity: 1</title></circle></a>
+ <a href="SessionService.php.html#45"><circle cx="60.0" cy="341.8" r="4.0" class="bubble-danger"><title>Grocy\Services\SessionService::DeleteToken — Coverage: 0.0% | Lines: 2 | Complexity: 1</title></circle></a>
+ <a href="StockService.php.html#601"><circle cx="60.0" cy="341.8" r="4.0" class="bubble-danger"><title>Grocy\Services\StockService::GetExternalBarcodeLookupPluginName — Coverage: 0.0% | Lines: 2 | Complexity: 1</title></circle></a>
+ <a href="StockService.php.html#719"><circle cx="60.0" cy="341.8" r="4.0" class="bubble-danger"><title>Grocy\Services\StockService::GetCurrentStockLocations — Coverage: 0.0% | Lines: 2 | Complexity: 1</title></circle></a>
+ <a href="StockService.php.html#1855"><circle cx="60.0" cy="341.8" r="4.0" class="bubble-danger"><title>Grocy\Services\StockService::LocationExists — Coverage: 0.0% | Lines: 2 | Complexity: 1</title></circle></a>
+ <a href="StockService.php.html#1861"><circle cx="60.0" cy="341.8" r="4.0" class="bubble-danger"><title>Grocy\Services\StockService::ProductExists — Coverage: 0.0% | Lines: 2 | Complexity: 1</title></circle></a>
+ <a href="StockService.php.html#1867"><circle cx="60.0" cy="341.8" r="4.0" class="bubble-danger"><title>Grocy\Services\StockService::ShoppingListExists — Coverage: 0.0% | Lines: 2 | Complexity: 1</title></circle></a>
+ <a href="TasksService.php.html#71"><circle cx="60.0" cy="341.8" r="4.0" class="bubble-danger"><title>Grocy\Services\TasksService::TaskExists — Coverage: 0.0% | Lines: 2 | Complexity: 1</title></circle></a>
+ <a href="UsersService.php.html#34"><circle cx="60.0" cy="341.8" r="4.0" class="bubble-danger"><title>Grocy\Services\UsersService::DeleteUser — Coverage: 0.0% | Lines: 2 | Complexity: 1</title></circle></a>
+ <a href="UsersService.php.html#160"><circle cx="60.0" cy="341.8" r="4.0" class="bubble-danger"><title>Grocy\Services\UsersService::UserExists — Coverage: 0.0% | Lines: 2 | Complexity: 1</title></circle></a>
+ <a href="ApiKeyService.php.html#96"><circle cx="60.0" cy="341.8" r="4.0" class="bubble-danger"><title>Grocy\Services\ApiKeyService::RemoveApiKey — Coverage: 0.0% | Lines: 1 | Complexity: 1</title></circle></a>
+ <a href="BaseService.php.html#7"><circle cx="780.0" cy="341.8" r="4.0" class="bubble-success"><title>Grocy\Services\BaseService::__construct — Coverage: 100.0% | Lines: 1 | Complexity: 1</title></circle></a>
+ <a href="DatabaseService.php.html#64"><circle cx="60.0" cy="341.8" r="4.0" class="bubble-danger"><title>Grocy\Services\DatabaseService::GetDbChangedTime — Coverage: 0.0% | Lines: 1 | Complexity: 1</title></circle></a>
+ <a href="DatabaseService.php.html#125"><circle cx="60.0" cy="341.8" r="4.0" class="bubble-danger"><title>Grocy\Services\DatabaseService::SetDbChangedTime — Coverage: 0.0% | Lines: 1 | Complexity: 1</title></circle></a>
+ <a href="DemoDataGeneratorService.php.html#461"><circle cx="60.0" cy="341.8" r="4.0" class="bubble-danger"><title>Grocy\Services\DemoDataGeneratorService::RandomPrice — Coverage: 0.0% | Lines: 1 | Complexity: 1</title></circle></a>
+ <a href="LocalizationService.php.html#65"><circle cx="60.0" cy="341.8" r="4.0" class="bubble-danger"><title>Grocy\Services\LocalizationService::GetPoAsJsonString — Coverage: 0.0% | Lines: 1 | Complexity: 1</title></circle></a>
+ <a href="LocalizationService.php.html#70"><circle cx="60.0" cy="341.8" r="4.0" class="bubble-danger"><title>Grocy\Services\LocalizationService::GetPoAsJsonStringQu — Coverage: 0.0% | Lines: 1 | Complexity: 1</title></circle></a>
+ <a href="SessionService.php.html#88"><circle cx="60.0" cy="341.8" r="4.0" class="bubble-danger"><title>Grocy\Services\SessionService::GetDefaultUser — Coverage: 0.0% | Lines: 1 | Complexity: 1</title></circle></a>
+ <a href="SessionService.php.html#93"><circle cx="60.0" cy="341.8" r="4.0" class="bubble-danger"><title>Grocy\Services\SessionService::DeleteExpiredTokens — Coverage: 0.0% | Lines: 1 | Complexity: 1</title></circle></a>
+ <a href="StockService.php.html#737"><circle cx="60.0" cy="341.8" r="4.0" class="bubble-danger"><title>Grocy\Services\StockService::GetExpiredProducts — Coverage: 0.0% | Lines: 1 | Complexity: 1</title></circle></a>
+ <a href="StockService.php.html#910"><circle cx="60.0" cy="341.8" r="4.0" class="bubble-danger"><title>Grocy\Services\StockService::GetStockEntry — Coverage: 0.0% | Lines: 1 | Complexity: 1</title></circle></a>
+ <a href="UserfieldsService.php.html#24"><circle cx="60.0" cy="341.8" r="4.0" class="bubble-danger"><title>Grocy\Services\UserfieldsService::GetAllFields — Coverage: 0.0% | Lines: 1 | Complexity: 1</title></circle></a>
+ <a href="UserfieldsService.php.html#56"><circle cx="60.0" cy="341.8" r="4.0" class="bubble-danger"><title>Grocy\Services\UserfieldsService::GetField — Coverage: 0.0% | Lines: 1 | Complexity: 1</title></circle></a>
+ <a href="UserfieldsService.php.html#61"><circle cx="60.0" cy="341.8" r="4.0" class="bubble-danger"><title>Grocy\Services\UserfieldsService::GetFieldTypes — Coverage: 0.0% | Lines: 1 | Complexity: 1</title></circle></a>
+ <a href="UserfieldsService.php.html#149"><circle cx="60.0" cy="341.8" r="4.0" class="bubble-danger"><title>Grocy\Services\UserfieldsService::IsValidExposedEntity — Coverage: 0.0% | Lines: 1 | Complexity: 1</title></circle></a>
+ <a href="UsersService.php.html#117"><circle cx="60.0" cy="341.8" r="4.0" class="bubble-danger"><title>Grocy\Services\UsersService::GetUsersAsDto — Coverage: 0.0% | Lines: 1 | Complexity: 1</title></circle></a>
+</svg>
+     </div>
+     <div>
+      <p class="hint">Sorted by descending <abbr title="Change Risk Anti-Patterns">CRAP</abbr> index.</p>
+      <div class="scrollbox">
+     <table class="crap">
+      <thead>
+       <tr>
+        <th scope="col">Method</th>
+        <th scope="col" class="number"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+        <th scope="col" class="number">Coverage</th>
+       </tr>
+      </thead>
+      <tbody>
+       <tr><td><a href="StockService.php.html#112">Grocy\Services\StockService::AddProduct</a></td><td class="number">870</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="StockService.php.html#979">Grocy\Services\StockService::OpenProduct</a></td><td class="number">650</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="StockService.php.html#1272">Grocy\Services\StockService::TransferProduct</a></td><td class="number">650</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="StockService.php.html#365">Grocy\Services\StockService::ConsumeProduct</a></td><td class="number">600</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="StockService.php.html#1485">Grocy\Services\StockService::UndoBooking</a></td><td class="number">506</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="CalendarService.php.html#17">Grocy\Services\CalendarService::GetEvents</a></td><td class="number">462</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="ChoresService.php.html#19">Grocy\Services\ChoresService::CalculateNextExecutionAssignment</a></td><td class="number">240</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="StockService.php.html#607">Grocy\Services\StockService::ExternalBarcodeLookup</a></td><td class="number">240</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="StockService.php.html#1189">Grocy\Services\StockService::GetShoppinglistInPrintableStrings</a></td><td class="number">240</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="LocalizationService.php.html#130">Grocy\Services\LocalizationService::LoadLocalizations</a></td><td class="number">210</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="DemoDataGeneratorService.php.html#9">Grocy\Services\DemoDataGeneratorService::PopulateDemoData</a></td><td class="number">132</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="StockService.php.html#915">Grocy\Services\StockService::InventoryProduct</a></td><td class="number">132</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="ChoresService.php.html#163">Grocy\Services\ChoresService::TrackChore</a></td><td class="number">110</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="RecipesService.php.html#14">Grocy\Services\RecipesService::AddNotFulfilledProductsToShoppingList</a></td><td class="number">110</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="RecipesService.php.html#80">Grocy\Services\RecipesService::ConsumeRecipe</a></td><td class="number">110</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="FilesService.php.html#39">Grocy\Services\FilesService::DownscaleImage</a></td><td class="number">90</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="StockService.php.html#1780">Grocy\Services\StockService::CompactStockEntries</a></td><td class="number">72</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="DatabaseMigrationService.php.html#60">Grocy\Services\DatabaseMigrationService::ExecuteSqlMigrationWhenNeeded</a></td><td class="number">56</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="DatabaseService.php.html#26">Grocy\Services\DatabaseService::ExecuteDbStatement</a></td><td class="number">56</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="DatabaseMigrationService.php.html#13">Grocy\Services\DatabaseMigrationService::MigrateDatabase</a></td><td class="number">42</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="DatabaseMigrationService.php.html#45">Grocy\Services\DatabaseMigrationService::ExecutePhpMigrationWhenNeeded</a></td><td class="number">42</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="FilesService.php.html#11">Grocy\Services\FilesService::__construct</a></td><td class="number">42</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="StockService.php.html#1163">Grocy\Services\StockService::RemoveProductFromShoppingList</a></td><td class="number">42</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="StockService.php.html#1685">Grocy\Services\StockService::MergeProducts</a></td><td class="number">42</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="ApplicationService.php.html#9">Grocy\Services\ApplicationService::GetChangelog</a></td><td class="number">30</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="ChoresService.php.html#104">Grocy\Services\ChoresService::GetChoreDetails</a></td><td class="number">30</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="ChoresService.php.html#243">Grocy\Services\ChoresService::MergeChores</a></td><td class="number">30</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="FilesService.php.html#78">Grocy\Services\FilesService::DeleteFile</a></td><td class="number">30</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="StockService.php.html#21">Grocy\Services\StockService::AddMissingProductsToShoppingList</a></td><td class="number">30</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="StockService.php.html#307">Grocy\Services\StockService::AddProductToShoppingList</a></td><td class="number">30</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="StockService.php.html#526">Grocy\Services\StockService::EditStockEntry</a></td><td class="number">30</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="StockService.php.html#1828">Grocy\Services\StockService::LoadExternalBarcodeLookupPlugin</a></td><td class="number">30</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="UserfieldsService.php.html#103">Grocy\Services\UserfieldsService::SetValues</a></td><td class="number">30</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="UsersService.php.html#71">Grocy\Services\UsersService::GetUserSetting</a></td><td class="number">30</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="ApiKeyService.php.html#67">Grocy\Services\ApiKeyService::IsValidApiKey</a></td><td class="number">20</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="LocalizationService.php.html#28">Grocy\Services\LocalizationService::CheckAndAddMissingTranslationToPot</a></td><td class="number">20</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="PrintService.php.html#12">Grocy\Services\PrintService::printShoppingList</a></td><td class="number">20</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="StockService.php.html#60">Grocy\Services\StockService::AddOverdueProductsToShoppingList</a></td><td class="number">20</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="StockService.php.html#86">Grocy\Services\StockService::AddExpiredProductsToShoppingList</a></td><td class="number">20</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="StockService.php.html#755">Grocy\Services\StockService::GetProductDetails</a></td><td class="number">20</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="StockService.php.html#821">Grocy\Services\StockService::GetProductIdFromBarcode</a></td><td class="number">20</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="StockService.php.html#866">Grocy\Services\StockService::GetProductStockEntries</a></td><td class="number">20</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="TasksService.php.html#9">Grocy\Services\TasksService::GetCurrent</a></td><td class="number">20</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="UserfieldsService.php.html#76">Grocy\Services\UserfieldsService::GetValues</a></td><td class="number">20</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="UsersService.php.html#40">Grocy\Services\UsersService::EditUser</a></td><td class="number">20</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="ApiKeyService.php.html#34">Grocy\Services\ApiKeyService::GetOrCreateApiKey</a></td><td class="number">12</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="ChoresService.php.html#143">Grocy\Services\ChoresService::GetCurrent</a></td><td class="number">12</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="LocalizationService.php.html#75">Grocy\Services\LocalizationService::__n</a></td><td class="number">12</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="LocalizationService.php.html#94">Grocy\Services\LocalizationService::__t</a></td><td class="number">12</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="LocalizationService.php.html#115">Grocy\Services\LocalizationService::GetInstance</a></td><td class="number">12</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="SessionService.php.html#14">Grocy\Services\SessionService::CreateToken</a></td><td class="number">12</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="SessionService.php.html#51">Grocy\Services\SessionService::ValidateToken</a></td><td class="number">12</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="StockService.php.html#348">Grocy\Services\StockService::ClearShoppingList</a></td><td class="number">12</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="StockService.php.html#843">Grocy\Services\StockService::GetProductPriceHistory</a></td><td class="number">12</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="StockService.php.html#1670">Grocy\Services\StockService::UndoTransaction</a></td><td class="number">12</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="UsersService.php.html#122">Grocy\Services\UsersService::SetUserSetting</a></td><td class="number">12</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="DatabaseService.php.html#140">Grocy\Services\DatabaseService::GetDbFilePath</a></td><td class="number">8.74</td><td class="number">33.3%</td></tr>
+       <tr><td><a href="DatabaseService.php.html#69">Grocy\Services\DatabaseService::GetDbConnection</a></td><td class="number">7.46</td><td class="number">40.0%</td></tr>
+       <tr><td><a href="ApiKeyService.php.html#55">Grocy\Services\ApiKeyService::GetUserByApiKey</a></td><td class="number">6</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="ApplicationService.php.html#85">Grocy\Services\ApplicationService::getSqliteLocaltime</a></td><td class="number">6</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="BaseService.php.html#15">Grocy\Services\BaseService::GetInstance</a></td><td class="number">6</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="BatteriesService.php.html#7">Grocy\Services\BatteriesService::GetBatteryDetails</a></td><td class="number">6</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="BatteriesService.php.html#27">Grocy\Services\BatteriesService::GetCurrent</a></td><td class="number">6</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="BatteriesService.php.html#39">Grocy\Services\BatteriesService::TrackChargeCycle</a></td><td class="number">6</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="BatteriesService.php.html#55">Grocy\Services\BatteriesService::UndoChargeCycle</a></td><td class="number">6</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="ChoresService.php.html#226">Grocy\Services\ChoresService::UndoChoreExecution</a></td><td class="number">6</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="DatabaseService.php.html#14">Grocy\Services\DatabaseService::ExecuteDbQuery</a></td><td class="number">6</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="DemoDataGeneratorService.php.html#432">Grocy\Services\DemoDataGeneratorService::DownloadFileIfNotAlreadyExists</a></td><td class="number">6</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="DemoDataGeneratorService.php.html#445">Grocy\Services\DemoDataGeneratorService::NextSupermarketId</a></td><td class="number">6</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="FilesService.php.html#105">Grocy\Services\FilesService::GetFilePath</a></td><td class="number">6</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="LocalizationService.php.html#41">Grocy\Services\LocalizationService::GetPluralCount</a></td><td class="number">6</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="LocalizationService.php.html#53">Grocy\Services\LocalizationService::GetPluralDefinition</a></td><td class="number">6</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="PrintService.php.html#39">Grocy\Services\PrintService::getPrinterHandle</a></td><td class="number">6</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="RecipesService.php.html#140">Grocy\Services\RecipesService::GetRecipesResolved</a></td><td class="number">6</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="RecipesService.php.html#152">Grocy\Services\RecipesService::CopyRecipe</a></td><td class="number">6</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="SessionService.php.html#77">Grocy\Services\SessionService::GetUserByToken</a></td><td class="number">6</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="StockService.php.html#692">Grocy\Services\StockService::GetCurrentStock</a></td><td class="number">6</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="StockService.php.html#707">Grocy\Services\StockService::GetCurrentStockLocationContent</a></td><td class="number">6</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="StockService.php.html#725">Grocy\Services\StockService::GetDueProducts</a></td><td class="number">6</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="StockService.php.html#742">Grocy\Services\StockService::GetMissingProducts</a></td><td class="number">6</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="StockService.php.html#889">Grocy\Services\StockService::GetLocationStockEntries</a></td><td class="number">6</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="StockService.php.html#899">Grocy\Services\StockService::GetProductStockLocations</a></td><td class="number">6</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="StockService.php.html#1732">Grocy\Services\StockService::CopyProduct</a></td><td class="number">6</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="TasksService.php.html#39">Grocy\Services\TasksService::MarkTaskAsCompleted</a></td><td class="number">6</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="TasksService.php.html#55">Grocy\Services\TasksService::UndoTask</a></td><td class="number">6</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="UserfieldsService.php.html#29">Grocy\Services\UserfieldsService::GetAllValues</a></td><td class="number">6</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="UserfieldsService.php.html#40">Grocy\Services\UserfieldsService::GetEntities</a></td><td class="number">6</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="UserfieldsService.php.html#66">Grocy\Services\UserfieldsService::GetFields</a></td><td class="number">6</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="UserfieldsService.php.html#139">Grocy\Services\UserfieldsService::GetOpenApispec</a></td><td class="number">6</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="UsersService.php.html#9">Grocy\Services\UsersService::CreateUser</a></td><td class="number">6</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="UsersService.php.html#103">Grocy\Services\UsersService::GetUserSettings</a></td><td class="number">6</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="UsersService.php.html#149">Grocy\Services\UsersService::DeleteUserSetting</a></td><td class="number">6</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="DatabaseService.php.html#91">Grocy\Services\DatabaseService::GetDbConnectionRaw</a></td><td class="number">3.14</td><td class="number">75.0%</td></tr>
+       <tr><td><a href="ApiKeyService.php.html#10">Grocy\Services\ApiKeyService::CreateApiKey</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="ApiKeyService.php.html#26">Grocy\Services\ApiKeyService::GetApiKeyId</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="ApiKeyService.php.html#96">Grocy\Services\ApiKeyService::RemoveApiKey</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="ApplicationService.php.html#52">Grocy\Services\ApplicationService::GetInstalledVersion</a></td><td class="number">2</td><td class="number">100.0%</td></tr>
+       <tr><td><a href="ApplicationService.php.html#78">Grocy\Services\ApplicationService::convertToUtc</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="ApplicationService.php.html#98">Grocy\Services\ApplicationService::GetSystemTime</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="BatteriesService.php.html#71">Grocy\Services\BatteriesService::BatteryExists</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="CalendarService.php.html#9">Grocy\Services\CalendarService::__construct</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="ChoresService.php.html#277">Grocy\Services\ChoresService::ChoreExists</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="DatabaseService.php.html#64">Grocy\Services\DatabaseService::GetDbChangedTime</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="DatabaseService.php.html#125">Grocy\Services\DatabaseService::SetDbChangedTime</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="DatabaseService.php.html#130">Grocy\Services\DatabaseService::GetInstance</a></td><td class="number">2</td><td class="number">100.0%</td></tr>
+       <tr><td><a href="DemoDataGeneratorService.php.html#461">Grocy\Services\DemoDataGeneratorService::RandomPrice</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="DemoDataGeneratorService.php.html#466">Grocy\Services\DemoDataGeneratorService::__n_sql</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="DemoDataGeneratorService.php.html#472">Grocy\Services\DemoDataGeneratorService::__t_sql</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="LocalizationService.php.html#11">Grocy\Services\LocalizationService::__construct</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="LocalizationService.php.html#65">Grocy\Services\LocalizationService::GetPoAsJsonString</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="LocalizationService.php.html#70">Grocy\Services\LocalizationService::GetPoAsJsonStringQu</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="PrintService.php.html#52">Grocy\Services\PrintService::printHeader</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="RecipesService.php.html#134">Grocy\Services\RecipesService::GetRecipesPosResolved</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="RecipesService.php.html#169">Grocy\Services\RecipesService::RecipeExists</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="SessionService.php.html#45">Grocy\Services\SessionService::DeleteToken</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="SessionService.php.html#88">Grocy\Services\SessionService::GetDefaultUser</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="SessionService.php.html#93">Grocy\Services\SessionService::DeleteExpiredTokens</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="StockService.php.html#601">Grocy\Services\StockService::GetExternalBarcodeLookupPluginName</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="StockService.php.html#719">Grocy\Services\StockService::GetCurrentStockLocations</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="StockService.php.html#737">Grocy\Services\StockService::GetExpiredProducts</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="StockService.php.html#910">Grocy\Services\StockService::GetStockEntry</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="StockService.php.html#1855">Grocy\Services\StockService::LocationExists</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="StockService.php.html#1861">Grocy\Services\StockService::ProductExists</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="StockService.php.html#1867">Grocy\Services\StockService::ShoppingListExists</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="TasksService.php.html#71">Grocy\Services\TasksService::TaskExists</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="UserfieldsService.php.html#24">Grocy\Services\UserfieldsService::GetAllFields</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="UserfieldsService.php.html#56">Grocy\Services\UserfieldsService::GetField</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="UserfieldsService.php.html#61">Grocy\Services\UserfieldsService::GetFieldTypes</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="UserfieldsService.php.html#149">Grocy\Services\UserfieldsService::IsValidExposedEntity</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="UsersService.php.html#34">Grocy\Services\UsersService::DeleteUser</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="UsersService.php.html#117">Grocy\Services\UsersService::GetUsersAsDto</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="UsersService.php.html#160">Grocy\Services\UsersService::UserExists</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="ApplicationService.php.html#62">Grocy\Services\ApplicationService::GetSystemInfo</a></td><td class="number">1</td><td class="number">100.0%</td></tr>
+       <tr><td><a href="BaseService.php.html#7">Grocy\Services\BaseService::__construct</a></td><td class="number">1</td><td class="number">100.0%</td></tr>
+      </tbody>
+     </table>
+      </div>
+     </div>
+    </div>
+   </section>
+  </main>
+  <footer>
+   <p class="credits">Generated by <a href="https://github.com/sebastianbergmann/php-code-coverage" target="_top">php-code-coverage 14.5.1</a> using <a href="https://www.php.net/" target="_top">PHP 8.5.12</a> and <a href="https://phpunit.de/">PHPUnit 13.4.6</a> at Wed Nov 11 22:05:06 UTC 2026.</p>
+  </footer>
+ </body>
+</html>
