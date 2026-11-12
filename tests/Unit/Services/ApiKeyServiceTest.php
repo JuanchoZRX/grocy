@@ -5,7 +5,7 @@ namespace Grocy\Tests\Unit\Services;
 use Grocy\Services\ApiKeyService;
 use PHPUnit\Framework\TestCase;
 
-// Mock de la consulta
+// Para simular las consultas de claves API
 interface ApiKeysQueryStub
 {
     public function where($campo, ...$valor);
@@ -14,14 +14,14 @@ interface ApiKeysQueryStub
     public function createRow($datos);
 }
 
-// Mock de acceso a la DB
+// Para simular el acceso a la base de datos.
 interface ApiKeysDatabaseStub
 {
     public function api_keys();
     public function users($userId);
 }
 
-// Mock para guardar el registro
+// Para simular el guardado de un registro de clave API.
 interface ApiKeyRowStub
 {
     public function save();
@@ -29,7 +29,7 @@ interface ApiKeyRowStub
 
 class ApiKeyServiceTest extends TestCase
 {
-    // Función auxiliar para crear una instancia de ApiKeyService con un objeto de base de datos simulado.
+    // Crea el servicio con la BD simulada.
     private function crearServicioConDB(object $db): ApiKeyService
     {
         $service = (new \ReflectionClass(ApiKeyService::class))->newInstanceWithoutConstructor();
@@ -42,20 +42,22 @@ class ApiKeyServiceTest extends TestCase
         return $service;
     }
 
+    // Prueba que GetOrCreateApiKey devuelve null para el tipo de clave "default".
     public function test_NoPermiteObtenerOCrearClaveDefault(): void
     {
-        // Arrange: Instanciamos el servicio sin inicializar la base de datos.
+        // Arrange
         $service = (new \ReflectionClass(ApiKeyService::class))->newInstanceWithoutConstructor();
 
-        // Act: Ejecutamos el método que queremos probar.
+        // Act
         $resultado = $service->GetOrCreateApiKey(
             ApiKeyService::API_KEY_TYPE_DEFAULT
         );
 
-        // Assert: Verificamos el resultado esperado (null).
+        // Assert
         $this->assertNull($resultado);
     }
 
+    // Prueba que IsValidApiKey devuelve false para una clave nula.
     public function test_RechazaClaveNula(): void
     {
         $service = (new \ReflectionClass(ApiKeyService::class))->newInstanceWithoutConstructor();
@@ -65,6 +67,7 @@ class ApiKeyServiceTest extends TestCase
         $this->assertFalse($resultado);
     }
 
+    // Prueba que IsValidApiKey devuelve false para una clave vacía.
     public function test_RechazaClaveVacia(): void
     {
         $service = (new \ReflectionClass(ApiKeyService::class))->newInstanceWithoutConstructor();
@@ -74,6 +77,7 @@ class ApiKeyServiceTest extends TestCase
         $this->assertFalse($resultado);
     }
 
+    // Prueba que IsValidApiKey devuelve false para una clave inexistente.
     public function test_RechazaApiKeyInexistente(): void
     {
         // Arrange: simulamos una consulta sin resultados.
@@ -93,6 +97,7 @@ class ApiKeyServiceTest extends TestCase
         $this->assertFalse($resultado);
     }
 
+    // Prueba que GetApiKeyId devuelve el ID correcto para una clave existente.
     public function test_ObtieneIdDeApiKey(): void
     {
         // Arrange
@@ -114,10 +119,10 @@ class ApiKeyServiceTest extends TestCase
         $this->assertSame(15, $resultado);
     }
 
-
+    // Prueba de GetUserByApiKey para devolver un usuario con una clave existente.
     public function test_ObtieneUsuarioDeApiKeyExistente(): void
     {
-        // Arrange: prepara los datos simulados.
+        // Arrange: preparamos los datos simulados.
         $registro = (object) ['user_id' => 7];
         $usuario = (object) [
             'id' => 7,
@@ -129,12 +134,10 @@ class ApiKeyServiceTest extends TestCase
         $consulta->method('where')->willReturn($consulta);
         $consulta->method('fetch')->willReturn($registro);
 
-        // Simula la base de datos.
         $db = $this->createStub(ApiKeysDatabaseStub::class);
         $db->method('api_keys')->willReturn($consulta);
         $db->method('users')->willReturn($usuario);
 
-        // Crea el servicio sin abrir la BD real.
         $service = $this->crearServicioConDB($db);
 
         // Act
@@ -144,6 +147,7 @@ class ApiKeyServiceTest extends TestCase
         $this->assertSame($usuario, $resultado);
     }
 
+    // Prueba de GetUserByApiKey para devolver null con una clave inexistente.
     public function test_ObtieneUsuarioDeApiKeyInexistente(): void
     {
         // Arrange: simulamos una consulta sin resultados.
@@ -163,25 +167,26 @@ class ApiKeyServiceTest extends TestCase
         $this->assertNull($resultado);
     }
 
+    // Prueba que RemoveApiKey solicita eliminar la clave API indicada.
     public function test_EliminaApiKey(): void
     {
-        // Arrange: preparamos la consulta simulada.
+        // Arrange
         $consulta = $this->createMock(ApiKeysQueryStub::class);
         $consulta->method('where')->willReturn($consulta);
 
-        // Expect: verifica que delete() se invoque una vez.
+        // Expect
         $consulta->expects($this->once())->method('delete');
 
-        // Simula el acceso a la BD.
         $db = $this->createStub(ApiKeysDatabaseStub::class);
         $db->method('api_keys')->willReturn($consulta);
 
         $service = $this->crearServicioConDB($db);
 
-        // Act: ejecutar el método real.
+        // Act
         $service->RemoveApiKey('abc123');
     }
 
+    // Prueba de GetOrCreateApiKey para reutilizar una clave existente.
     public function test_ReutilizaApiKeyExistente(): void
     {
         // Arrange: simulamos una clave existente.
@@ -207,9 +212,10 @@ class ApiKeyServiceTest extends TestCase
         $this->assertSame('clave-existente-123', $resultado);
     }
 
+    // Prueba que CreateApiKey genera una clave hexadecimal de 48 caracteres.
     public function test_GeneraApiKeyConFormatoCorrecto(): void
     {
-        // Arrange: simulamos el registro y su guardado.
+        // Arrange: simulamos el registro que se va a crear.
         $fila = $this->createStub(ApiKeyRowStub::class);
         $consulta = $this->createStub(ApiKeysQueryStub::class);
         $consulta->method('createRow')->willReturn($fila);
@@ -222,31 +228,31 @@ class ApiKeyServiceTest extends TestCase
         // Act
         $resultado = $service->CreateApiKey();
 
-        // Assert: comprobamos el formato hexadecimal de 48 caracteres.
+        // Assert: formato hexadecimal de 48 caracteres.
         $this->assertMatchesRegularExpression(
             '/^[0-9a-f]{48}$/',
             $resultado
         );
     }
 
+    // Prueba que CreateApiKey solicita guardar el registro de la clave generada.
     public function test_GuardaApiKeyGenerada(): void
     {
-        // Arrange: creamos un mock del registro.
+        // Arrange
         $fila = $this->createMock(ApiKeyRowStub::class);
 
-        // Verifica que save() se invoque una vez.
+        // Expect
         $fila->expects($this->once())->method('save');
 
-        // Creación del registro simulada.
         $consulta = $this->createStub(ApiKeysQueryStub::class);
         $consulta->method('createRow')->willReturn($fila);
 
         $db = $this->createStub(ApiKeysDatabaseStub::class);
         $db->method('api_keys')->willReturn($consulta);
 
-        $service = $this->crearServicioConDb($db);
+        $service = $this->crearServicioConDB($db);
 
-        // Act: genera una clave API.
+        // Act
         $service->CreateApiKey();
     }
 } 
