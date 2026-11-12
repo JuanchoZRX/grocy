@@ -1,12 +1,15 @@
 <?php
 
+// Paulo Herrera
+// 11 pruebas unitarias para UserfieldsService.php
+
 namespace Grocy\Tests\Unit\Services;
 
 use Grocy\Services\BaseService;
 use Grocy\Services\UserfieldsService;
 use PHPUnit\Framework\TestCase;
 
-// Simula las consultas.
+// Simula las consultas
 interface UserfieldsQueryStub
 {
     public function where($campo, ...$valores);
@@ -16,7 +19,7 @@ interface UserfieldsQueryStub
     public function createRow($datos);
 }
 
-// Simula la base de datos.
+// Simula la base de datos
 interface UserfieldsDatabaseStub
 {
     public function userfields($id = null);
@@ -25,7 +28,7 @@ interface UserfieldsDatabaseStub
     public function userfield_values_resolved();
 }
 
-// Simula una fila.
+// Simula una fila
 interface UserfieldsRowStub
 {
     public function save();
@@ -84,8 +87,10 @@ final class UserfieldsServiceTest extends TestCase
     }
 
     // 1. GetAllFields
+    // Prueba de GetAllFields para obtener todos los campos.
     public function test_ObtieneTodosLosCampos(): void
     {
+        // Arrange
         $campos = [
             (object) ['id' => 1, 'name' => 'Color'],
             (object) ['id' => 2, 'name' => 'Marca']
@@ -96,16 +101,19 @@ final class UserfieldsServiceTest extends TestCase
             ->with('name', 'COLLATE NOCASE')->willReturnSelf();
         $consulta->method('fetchAll')->willReturn($campos);
 
+        // Act
         $db = $this->crearDB();
         $db->method('userfields')->willReturn($consulta);
-
+     
         $service = $this->crearServicioConDB($db);
         $resultado = $service->GetAllFields();
 
+        // Assert
         $this->assertSame($campos, $resultado);
     }
 
     // 2. GetAllValues
+    // Prueba de GetAllValues para obtener todos los valores de una entidad.
     public function test_ObtieneTodosLosValoresDeUnaEntidad(): void
     {
         $valores = [
@@ -129,6 +137,7 @@ final class UserfieldsServiceTest extends TestCase
     }
 
     // 3. GetEntities
+    // Prueba de GetEntities para obtener las entidades expuestas.
     public function test_ObtieneEntidadesOrdenadas(): void
     {
         $db = $this->crearDB([
@@ -147,6 +156,7 @@ final class UserfieldsServiceTest extends TestCase
     }
 
     // 4. GetField
+    // Prueba de GetField para obtener un campo por su ID.
     public function test_ObtieneCampoPorId(): void
     {
         $campo = (object) ['id' => 7, 'name' => 'Color'];
@@ -162,6 +172,7 @@ final class UserfieldsServiceTest extends TestCase
     }
 
     // 5. GetFieldTypes
+    // Prueba de GetFieldTypes para obtener los tipos de campos.
     public function test_ObtieneTiposDeCampos(): void
     {
         $service = $this->crearServicioConDB($this->crearDB());
@@ -178,6 +189,7 @@ final class UserfieldsServiceTest extends TestCase
     }
 
     // 6. GetFields
+    // Prueba de GetFields para obtener los campos de una entidad.
     public function test_ObtieneCamposDeUnaEntidad(): void
     {
         $campos = [(object) ['id' => 7, 'name' => 'Color']];
@@ -198,6 +210,7 @@ final class UserfieldsServiceTest extends TestCase
     }
 
     // 7. GetValues
+    // Prueba de GetValues para obtener los valores de un objeto.
     public function test_ObtieneValoresDeUnObjeto(): void
     {
         $campos = [
@@ -230,6 +243,7 @@ final class UserfieldsServiceTest extends TestCase
     }
 
     // 8. SetValues
+    // Prueba de SetValues para guardar un valor nuevo.
     public function test_GuardaValorNuevo(): void
     {
         $campo = $this->crearConsulta();
@@ -259,7 +273,8 @@ final class UserfieldsServiceTest extends TestCase
         $service->SetValues('products', 10, ['Color' => 'Rojo']);
     }
 
-    // 9. Consultar una entidad inválida.
+    // 9. Consultar una entidad inválida
+    // Prueba de GetFields para una entidad inexistente.
     public function test_RechazaEntidadInexistente(): void
     {
         $service = $this->crearServicioConDB($this->crearDB());
@@ -271,6 +286,7 @@ final class UserfieldsServiceTest extends TestCase
     }
 
     // 10. Actualizar un valor que ya existe.
+    // Prueba de SetValues para actualizar un valor existente.
     public function test_ActualizaValorExistente(): void
     {
         $campo = $this->crearConsulta();
@@ -296,6 +312,7 @@ final class UserfieldsServiceTest extends TestCase
     }
 
     // 11. Guardar un campo que no existe.
+    // Prueba de SetValues para un campo inexistente.
     public function test_RechazaCampoInexistente(): void
     {
         $consulta = $this->crearConsulta();

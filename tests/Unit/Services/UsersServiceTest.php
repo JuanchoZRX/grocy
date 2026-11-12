@@ -1,7 +1,7 @@
 <?php
 
 // Paulo Herrera
-// Primeras 11 pruebas unitarias para UsersService.php
+// 11 pruebas unitarias para UsersService.php
 
 namespace Grocy\Tests\Unit\Services;
 
@@ -83,6 +83,7 @@ final class UsersServiceTest extends TestCase
     }
 
     // 1. CreateUser
+    // Prueba de CreateUser para crear un nuevo usuario.
     public function test_CreaUsuario(): void
     {
         $usuario = (object) ['id' => 15];
@@ -119,6 +120,7 @@ final class UsersServiceTest extends TestCase
     }
 
     // 2. DeleteUser
+    // Prueba de DeleteUser para eliminar un usuario existente.
     public function test_EliminaUsuario(): void
     {
         $consulta = $this->createMock(UsersQueryStub::class);
@@ -133,6 +135,7 @@ final class UsersServiceTest extends TestCase
     }
 
     // 3. EditUser
+    // Prueba de EditUser para actualizar un usuario existente.
     public function test_EditaUsuarioConNuevaContrasena(): void
     {
         $consulta = $this->crearConsulta((object) ['id' => 15]);
@@ -156,6 +159,7 @@ final class UsersServiceTest extends TestCase
     }
 
     // 4. GetUserSetting
+    // Prueba de GetUserSetting para obtener la preferencia de un usuario.
     public function test_ObtienePreferencia(): void
     {
         $consulta = $this->crearConsulta((object) ['value' => 'oscuro']);
@@ -170,6 +174,7 @@ final class UsersServiceTest extends TestCase
     }
 
     // 5. GetUserSettings
+    // Prueba de GetUserSettings para obtener todas las preferencias de un usuario.
     public function test_ObtieneTodasLasPreferencias(): void
     {
         $consulta = $this->createStub(UsersQueryStub::class);
@@ -190,6 +195,7 @@ final class UsersServiceTest extends TestCase
     }
 
     // 6. GetUsersAsDto
+    // Prueba de GetUsersAsDto para obtener los usuarios como un DTO.
     public function test_ObtieneUsuariosComoDto(): void
     {
         $dto = $this->createStub(Result::class);
@@ -204,6 +210,7 @@ final class UsersServiceTest extends TestCase
     }
 
     // 7. SetUserSetting
+    // Prueba de SetUserSetting para guardar una nueva preferencia de usuario.
     public function test_GuardaPreferenciaNueva(): void
     {
         $fila = $this->createMock(UsersRowStub::class);
@@ -228,6 +235,7 @@ final class UsersServiceTest extends TestCase
     }
 
     // 8. DeleteUserSetting
+    // Prueba de DeleteUserSetting para eliminar una preferencia de usuario.
     public function test_EliminaPreferencia(): void
     {
         $consulta = $this->createMock(UsersQueryStub::class);
@@ -244,6 +252,7 @@ final class UsersServiceTest extends TestCase
     }
 
     // 9. Editar sin cambiar la contraseña.
+    // Prueba de EditUser para actualizar un usuario sin cambiar la contraseña.
     public function test_EditaUsuarioSinCambiarContrasena(): void
     {
         $consulta = $this->crearConsulta((object) ['id' => 15]);
@@ -267,6 +276,7 @@ final class UsersServiceTest extends TestCase
     }
 
     // 10. Editar un usuario inexistente.
+    // Prueba de EditUser para lanzar una excepción si el usuario no existe.
     public function test_RechazaUsuarioInexistente(): void
     {
         $consulta = $this->crearConsulta(null);
@@ -283,6 +293,7 @@ final class UsersServiceTest extends TestCase
     }
 
     // 11. Actualizar una preferencia existente.
+    // Prueba de SetUserSetting para actualizar una preferencia existente.
     public function test_ActualizaPreferenciaExistente(): void
     {
         $fila = $this->createMock(UsersRowStub::class);
