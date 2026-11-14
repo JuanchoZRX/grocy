@@ -7,9 +7,7 @@ use Grocy\Services\UsersService;
 
 /**
  * Base de todas las pruebas.
- *
- * Antes de cada prueba cierra las conexiones, copia una base SQLite limpia
- * y deja los servicios sin estado compartido.
+ * Antes de cada prueba cierra las conexiones, copia una base SQLite limpia y deja los servicios sin estado compartido.
  */
 abstract class ServiceTestCase extends PHPUnit\Framework\TestCase
 {
