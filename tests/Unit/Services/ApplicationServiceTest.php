@@ -2,9 +2,8 @@
 
 use Grocy\Services\ApplicationService;
 
-/**
- * Prueba humo: confirma que la base de pruebas y las migraciones funcionan.
- */
+
+// Prueba sencilla para confirmar que la base de pruebas y las migraciones funcionan
 final class ApplicationServiceTest extends ServiceTestCase
 {
 	public function testLeeLaBaseMigrada(): void

@@ -56,10 +56,7 @@ final class UserfieldsServiceTest extends TestCase
             }
         }');
 
-        $propiedad = new \ReflectionProperty(
-            UserfieldsService::class,
-            'OpenApiSpec'
-        );
+        $propiedad = new \ReflectionProperty(UserfieldsService::class, 'OpenApiSpec');
         $propiedad->setValue($service, $spec);
 
         return $service;
@@ -87,18 +84,13 @@ final class UserfieldsServiceTest extends TestCase
     }
 
     // 1. GetAllFields
-    // Prueba de GetAllFields para obtener todos los campos.
+    // Prueba de GetAllFields para obtener todos los campos
     public function test_ObtieneTodosLosCampos(): void
     {
-        
-        $campos = [
-            (object) ['id' => 1, 'name' => 'Color'],
-            (object) ['id' => 2, 'name' => 'Marca']
-        ];
+        $campos = [(object) ['id' => 1, 'name' => 'Color'], (object) ['id' => 2, 'name' => 'Marca']];
 
         $consulta = $this->createMock(UserfieldsQueryStub::class);
-        $consulta->expects($this->once())->method('orderBy')
-            ->with('name', 'COLLATE NOCASE')->willReturnSelf();
+        $consulta->expects($this->once())->method('orderBy')->with('name', 'COLLATE NOCASE')->willReturnSelf();
         $consulta->method('fetchAll')->willReturn($campos);
 
         
@@ -113,16 +105,13 @@ final class UserfieldsServiceTest extends TestCase
     }
 
     // 2. GetAllValues
-    // Prueba de GetAllValues para obtener todos los valores de una entidad.
+    // Prueba de GetAllValues para obtener todos los valores de una entidad
     public function test_ObtieneTodosLosValoresDeUnaEntidad(): void
     {
-        $valores = [
-            (object) ['name' => 'Color', 'value' => 'Rojo']
-        ];
+        $valores = [(object) ['name' => 'Color', 'value' => 'Rojo']];
 
         $consulta = $this->createMock(UserfieldsQueryStub::class);
-        $consulta->expects($this->once())->method('where')
-            ->with('entity', 'products')->willReturnSelf();
+        $consulta->expects($this->once())->method('where')->with('entity', 'products')->willReturnSelf();
         $consulta->method('orderBy')->willReturnSelf();
         $consulta->method('fetchAll')->willReturn($valores);
 
@@ -137,34 +126,25 @@ final class UserfieldsServiceTest extends TestCase
     }
 
     // 3. GetEntities
-    // Prueba de GetEntities para obtener las entidades expuestas.
+    // Prueba de GetEntities para obtener las entidades expuestas
     public function test_ObtieneEntidadesOrdenadas(): void
     {
-        $db = $this->crearDB([
-            (object) ['name' => 'vehiculos']
-        ]);
+        $db = $this->crearDB([(object) ['name' => 'vehiculos']]);
 
         $service = $this->crearServicioConDB($db);
         $resultado = $service->GetEntities();
 
-        $this->assertSame([
-            'chores',
-            'products',
-            'userentity-vehiculos',
-            'users'
-        ], $resultado);
+        $this->assertSame(['chores', 'products','userentity-vehiculos', 'users'], $resultado);
     }
 
     // 4. GetField
-    // Prueba de GetField para obtener un campo por su ID.
+    // Prueba de GetField para obtener un campo por su ID
     public function test_ObtieneCampoPorId(): void
     {
         $campo = (object) ['id' => 7, 'name' => 'Color'];
         
         $db = $this->createMock(UserfieldsDatabaseStub::class);
-        $db->expects($this->once())->method('userfields')
-            ->with(7)->willReturn($campo);
-
+        $db->expects($this->once())->method('userfields')->with(7)->willReturn($campo);
         
         $service = $this->crearServicioConDB($db);
         $resultado = $service->GetField(7);
@@ -173,7 +153,7 @@ final class UserfieldsServiceTest extends TestCase
     }
 
     // 5. GetFieldTypes
-    // Prueba de GetFieldTypes para obtener los tipos de campos.
+    // Prueba de GetFieldTypes para obtener los tipos de campos
     public function test_ObtieneTiposDeCampos(): void
     {
         $service = $this->crearServicioConDB($this->crearDB());
@@ -183,21 +163,17 @@ final class UserfieldsServiceTest extends TestCase
         $this->assertCount(14, $resultado);
         $this->assertSame('checkbox', $resultado['USERFIELD_TYPE_CHECKBOX']);
         $this->assertSame('date', $resultado['USERFIELD_TYPE_DATE']);
-        $this->assertSame(
-            'text-single-line',
-            $resultado['USERFIELD_TYPE_SINGLE_LINE_TEXT']
-        );
+        $this->assertSame('text-single-line',$resultado['USERFIELD_TYPE_SINGLE_LINE_TEXT']);
     }
 
     // 6. GetFields
-    // Prueba de GetFields para obtener los campos de una entidad.
+    // Prueba de GetFields para obtener los campos de una entidad
     public function test_ObtieneCamposDeUnaEntidad(): void
     {
         $campos = [(object) ['id' => 7, 'name' => 'Color']];
 
         $consulta = $this->createMock(UserfieldsQueryStub::class);
-        $consulta->expects($this->once())->method('where')
-            ->with('entity', 'products')->willReturnSelf();
+        $consulta->expects($this->once())->method('where')->with('entity', 'products')->willReturnSelf();
         $consulta->method('orderBy')->willReturnSelf();
         $consulta->method('fetchAll')->willReturn($campos);
 
@@ -211,22 +187,14 @@ final class UserfieldsServiceTest extends TestCase
     }
 
     // 7. GetValues
-    // Prueba de GetValues para obtener los valores de un objeto.
+    // Prueba de GetValues para obtener los valores de un objeto
     public function test_ObtieneValoresDeUnObjeto(): void
     {
-        $campos = [
-            (object) ['name' => 'Color'],
-            (object) ['name' => 'Marca']
-        ];
-
-        $valores = [
-            (object) ['name' => 'Color', 'value' => 'Rojo']
-        ];
+        $campos = [(object) ['name' => 'Color'], (object) ['name' => 'Marca']];
+        $valores = [(object) ['name' => 'Color', 'value' => 'Rojo']];
 
         $consulta = $this->createMock(UserfieldsQueryStub::class);
-        $consulta->expects($this->once())->method('where')
-            ->with('entity = :1 AND object_id = :2', 'products', 10)
-            ->willReturnSelf();
+        $consulta->expects($this->once())->method('where')->with('entity = :1 AND object_id = :2', 'products', 10)->willReturnSelf();
         $consulta->method('orderBy')->willReturnSelf();
         $consulta->method('fetchAll')->willReturn($valores);
 
@@ -237,14 +205,11 @@ final class UserfieldsServiceTest extends TestCase
         $service = $this->crearServicioConDB($db);
         $resultado = $service->GetValues('products', 10);
 
-        $this->assertSame([
-            'Color' => 'Rojo',
-            'Marca' => null
-        ], $resultado);
+        $this->assertSame(['Color' => 'Rojo', 'Marca' => null], $resultado);
     }
 
     // 8. SetValues
-    // Prueba de SetValues para guardar un valor nuevo.
+    // Prueba de SetValues para guardar un valor nuevo
     public function test_GuardaValorNuevo(): void
     {
         $campo = $this->crearConsulta();
@@ -254,17 +219,14 @@ final class UserfieldsServiceTest extends TestCase
         $fila->expects($this->once())->method('save');
 
         $valores = $this->createMock(UserfieldsQueryStub::class);
-        $valores->expects($this->once())->method('where')
-            ->with('field_id = :1 AND object_id = :2', 7, 10)
-            ->willReturnSelf();
+        $valores->expects($this->once())->method('where')->with('field_id = :1 AND object_id = :2', 7, 10)->willReturnSelf();
         $valores->method('fetch')->willReturn(null);
         $valores->expects($this->once())->method('createRow')
             ->with([
                 'field_id' => 7,
                 'object_id' => 10,
                 'value' => 'Rojo'
-            ])
-            ->willReturn($fila);
+            ])->willReturn($fila);
 
         $db = $this->crearDB();
         $db->method('userfields')->willReturn($campo);
@@ -274,8 +236,8 @@ final class UserfieldsServiceTest extends TestCase
         $service->SetValues('products', 10, ['Color' => 'Rojo']);
     }
 
-    // 9. Consultar una entidad inválida
-    // Prueba de GetFields para una entidad inexistente.
+    // 9. Consultar una entidad invalida
+    // Prueba de GetFields para una entidad inexistente
     public function test_RechazaEntidadInexistente(): void
     {
         $service = $this->crearServicioConDB($this->crearDB());
@@ -286,21 +248,18 @@ final class UserfieldsServiceTest extends TestCase
         $service->GetFields('entidad_inexistente');
     }
 
-    // 10. Actualizar un valor que ya existe.
-    // Prueba de SetValues para actualizar un valor existente.
+    // 10. Actualizar un valor que ya existe
+    // Prueba de SetValues para actualizar un valor existente
     public function test_ActualizaValorExistente(): void
     {
         $campo = $this->crearConsulta();
         $campo->method('fetch')->willReturn((object) ['id' => 7]);
 
         $fila = $this->createMock(UserfieldsRowStub::class);
-        $fila->expects($this->once())->method('update')
-            ->with(['value' => 'Azul']);
+        $fila->expects($this->once())->method('update')->with(['value' => 'Azul']);
 
         $valores = $this->createMock(UserfieldsQueryStub::class);
-        $valores->expects($this->once())->method('where')
-            ->with('field_id = :1 AND object_id = :2', 7, 10)
-            ->willReturnSelf();
+        $valores->expects($this->once())->method('where')->with('field_id = :1 AND object_id = :2', 7, 10)->willReturnSelf();
         $valores->method('fetch')->willReturn($fila);
         $valores->expects($this->never())->method('createRow');
 
@@ -312,8 +271,8 @@ final class UserfieldsServiceTest extends TestCase
         $service->SetValues('products', 10, ['Color' => 'Azul']);
     }
 
-    // 11. Guardar un campo que no existe.
-    // Prueba de SetValues para un campo inexistente.
+    // 11. Guardar un campo que no existe
+    // Prueba de SetValues para un campo inexistente
     public function test_RechazaCampoInexistente(): void
     {
         $consulta = $this->crearConsulta();
@@ -325,9 +284,7 @@ final class UserfieldsServiceTest extends TestCase
         $service = $this->crearServicioConDB($db);
 
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessage(
-            'Field Inexistente is not a valid userfield of the given entity'
-        );
+        $this->expectExceptionMessage('Field Inexistente is not a valid userfield of the given entity');
 
         $service->SetValues('products', 10, ['Inexistente' => 'valor']);
     }

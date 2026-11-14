@@ -14,14 +14,14 @@ interface ApiKeysQueryStub
     public function createRow($datos);
 }
 
-// Para simular el acceso a la base de datos.
+// Para simular el acceso a la base de datos
 interface ApiKeysDatabaseStub
 {
     public function api_keys();
     public function users($userId);
 }
 
-// Para simular el guardado de un registro de clave API.
+// Para simular el guardado de un registro de clave API
 interface ApiKeyRowStub
 {
     public function save();
@@ -29,20 +29,17 @@ interface ApiKeyRowStub
 
 class ApiKeyServiceTest extends TestCase
 {
-    // Crea el servicio con la BD simulada.
+    // Crea el servicio con la BD simulada
     private function crearServicioConDB(object $db): ApiKeyService
     {
         $service = (new \ReflectionClass(ApiKeyService::class))->newInstanceWithoutConstructor();
-        $propiedad = new \ReflectionProperty(
-            ApiKeyService::class,
-            'DB'
-        );
+        $propiedad = new \ReflectionProperty(ApiKeyService::class, 'DB');
         $propiedad->setValue($service, $db);
         
         return $service;
     }
 
-    // Prueba que GetOrCreateApiKey devuelve null para el tipo de clave "default".
+    // Prueba que GetOrCreateApiKey devuelve null para el tipo de clave "default"
     public function test_NoPermiteObtenerOCrearClaveDefault(): void
     {
         // Arrange
@@ -57,7 +54,7 @@ class ApiKeyServiceTest extends TestCase
         $this->assertNull($resultado);
     }
 
-    // Prueba que IsValidApiKey devuelve false para una clave nula.
+    // Prueba que IsValidApiKey devuelve false para una clave nula
     public function test_RechazaClaveNula(): void
     {
         $service = (new \ReflectionClass(ApiKeyService::class))->newInstanceWithoutConstructor();
@@ -67,7 +64,7 @@ class ApiKeyServiceTest extends TestCase
         $this->assertFalse($resultado);
     }
 
-    // Prueba que IsValidApiKey devuelve false para una clave vacía.
+    // Prueba que IsValidApiKey devuelve false para una clave vacia
     public function test_RechazaClaveVacia(): void
     {
         $service = (new \ReflectionClass(ApiKeyService::class))->newInstanceWithoutConstructor();
@@ -77,7 +74,7 @@ class ApiKeyServiceTest extends TestCase
         $this->assertFalse($resultado);
     }
 
-    // Prueba que IsValidApiKey devuelve false para una clave inexistente.
+    // Prueba que IsValidApiKey devuelve false para una clave inexistente
     public function test_RechazaApiKeyInexistente(): void
     {
         // Arrange: simulamos una consulta sin resultados.
@@ -97,7 +94,7 @@ class ApiKeyServiceTest extends TestCase
         $this->assertFalse($resultado);
     }
 
-    // Prueba que GetApiKeyId devuelve el ID correcto para una clave existente.
+    // Prueba que GetApiKeyId devuelve el ID correcto para una clave existente
     public function test_ObtieneIdDeApiKey(): void
     {
         // Arrange
@@ -119,17 +116,14 @@ class ApiKeyServiceTest extends TestCase
         $this->assertSame(15, $resultado);
     }
 
-    // Prueba de GetUserByApiKey para devolver un usuario con una clave existente.
+    // Prueba de GetUserByApiKey para devolver un usuario con una clave existente
     public function test_ObtieneUsuarioDeApiKeyExistente(): void
     {
         // Arrange: preparamos los datos simulados.
         $registro = (object) ['user_id' => 7];
-        $usuario = (object) [
-            'id' => 7,
-            'username' => 'admin'
-        ];
+        $usuario = (object) ['id' => 7, 'username' => 'admin'];
 
-        // Simulamos la consulta de la API key.
+        // Simulamos la consulta de la API key
         $consulta = $this->createStub(ApiKeysQueryStub::class);
         $consulta->method('where')->willReturn($consulta);
         $consulta->method('fetch')->willReturn($registro);
@@ -147,7 +141,7 @@ class ApiKeyServiceTest extends TestCase
         $this->assertSame($usuario, $resultado);
     }
 
-    // Prueba de GetUserByApiKey para devolver null con una clave inexistente.
+    // Prueba de GetUserByApiKey para devolver null con una clave inexistente
     public function test_ObtieneUsuarioDeApiKeyInexistente(): void
     {
         // Arrange: simulamos una consulta sin resultados.
@@ -167,7 +161,7 @@ class ApiKeyServiceTest extends TestCase
         $this->assertNull($resultado);
     }
 
-    // Prueba que RemoveApiKey solicita eliminar la clave API indicada.
+    // Prueba que RemoveApiKey solicita eliminar la clave API indicada
     public function test_EliminaApiKey(): void
     {
         // Arrange
@@ -186,13 +180,11 @@ class ApiKeyServiceTest extends TestCase
         $service->RemoveApiKey('abc123');
     }
 
-    // Prueba de GetOrCreateApiKey para reutilizar una clave existente.
+    // Prueba de GetOrCreateApiKey para reutilizar una clave existente
     public function test_ReutilizaApiKeyExistente(): void
     {
         // Arrange: simulamos una clave existente.
-        $registro = (object) [
-            'api_key' => 'clave-existente-123'
-        ];
+        $registro = (object) ['api_key' => 'clave-existente-123'];
 
         $consulta = $this->createStub(ApiKeysQueryStub::class);
         $consulta->method('where')->willReturn($consulta);
@@ -204,15 +196,13 @@ class ApiKeyServiceTest extends TestCase
         $service = $this->crearServicioConDB($db);
 
         // Act
-        $resultado = $service->GetOrCreateApiKey(
-            ApiKeyService::API_KEY_TYPE_SPECIAL_PURPOSE_CALENDAR_ICAL
-        );
+        $resultado = $service->GetOrCreateApiKey(ApiKeyService::API_KEY_TYPE_SPECIAL_PURPOSE_CALENDAR_ICAL);
 
         // Assert
         $this->assertSame('clave-existente-123', $resultado);
     }
 
-    // Prueba que CreateApiKey genera una clave hexadecimal de 48 caracteres.
+    // Prueba que CreateApiKey genera una clave hexadecimal de 48 caracteres
     public function test_GeneraApiKeyConFormatoCorrecto(): void
     {
         // Arrange: simulamos el registro que se va a crear.
@@ -229,13 +219,10 @@ class ApiKeyServiceTest extends TestCase
         $resultado = $service->CreateApiKey();
 
         // Assert: formato hexadecimal de 48 caracteres.
-        $this->assertMatchesRegularExpression(
-            '/^[0-9a-f]{48}$/',
-            $resultado
-        );
+        $this->assertMatchesRegularExpression('/^[0-9a-f]{48}$/', $resultado);
     }
 
-    // Prueba que CreateApiKey solicita guardar el registro de la clave generada.
+    // Prueba que CreateApiKey solicita guardar el registro de la clave generada
     public function test_GuardaApiKeyGenerada(): void
     {
         // Arrange

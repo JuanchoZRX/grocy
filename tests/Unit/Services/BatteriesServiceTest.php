@@ -1,7 +1,7 @@
 <?php
 
 // Tzu Rue Hsu
-// 8 pruebas unitarias de BatteriesService.php
+// 8 pruebas unitarias de BatteriesService
 
 namespace Grocy\Tests\Unit\Services;
 
@@ -38,7 +38,7 @@ interface BatteryChargeCycleRowStub
 final class BatteriesServiceTest extends TestCase
 {
     // 1. GetBatteryDetails
-    // Rechaza la consulta cuando la batería no existe.
+    // Rechaza la consulta cuando la bateria no existe
     public function test_RechazaConsultarBateriaInexistente(): void
     {
         $db = $this->createMock(BatteriesDatabaseStub::class);
@@ -53,7 +53,7 @@ final class BatteriesServiceTest extends TestCase
     }
 
     // 2. GetCurrent
-    // Vincula cada estado con su batería por ID.
+    // Vincula cada estado con su batería por ID
     public function test_AsociaCadaEstadoConSuBateria(): void
     {
         $control = (object) ['id' => 5, 'name' => 'Control'];
@@ -69,7 +69,7 @@ final class BatteriesServiceTest extends TestCase
     }
 
     // 3. GetCurrent
-    // Devuelve null en el campo battery si no encuentra una batería activa.
+    // Devuelve null en el campo battery si no encuentra una bateria activa
     public function test_DevuelveEstadoSinBateriaActivaAsociada(): void
     {
         $bateriaActiva = (object) ['id' => 5, 'name' => 'Control'];
@@ -83,7 +83,7 @@ final class BatteriesServiceTest extends TestCase
     }
 
     // 4. GetCurrent
-    // Devuelve una lista vacía cuando no hay estados.
+    // Devuelve una lista vacia cuando no hay estados
     public function test_DevuelveListaVaciaSiNoHayEstados(): void
     {
         $servicio = $this->crearServicioConEstados([], []);
@@ -92,7 +92,7 @@ final class BatteriesServiceTest extends TestCase
     }
 
     // 5. TrackChargeCycle
-    // Guarda la carga con la fecha indicada y devuelve su ID.
+    // Guarda la carga con la fecha indicada y devuelve su ID
     public function test_RegistraCargaYDevuelveSuId(): void
     {
         $fecha = '2026-11-12 10:00:00';
@@ -113,7 +113,7 @@ final class BatteriesServiceTest extends TestCase
     }
 
     // 6. TrackChargeCycle
-    // Rechaza el registro si la batería no existe.
+    // Rechaza el registro si la batería no existe
     public function test_RechazaRegistrarCargaDeBateriaInexistente(): void
     {
         $db = $this->createMock(BatteriesDatabaseStub::class);
@@ -127,7 +127,7 @@ final class BatteriesServiceTest extends TestCase
     }
 
     // 7. UndoChargeCycle
-    // Marca la carga como deshecha y registra la fecha del cambio.
+    // Marca la carga como deshecha y registra la fecha del cambio
     public function test_MarcaCargaComoDeshechaYRegistraFecha(): void
     {
         $datosActualizados = null;
@@ -139,7 +139,7 @@ final class BatteriesServiceTest extends TestCase
         );
         $servicio = $this->crearServicioParaDeshacerCarga(42, $fila);
 
-        // Comprueba la fecha sin fijar la hora de ejecución.
+        // Comprueba la fecha sin fijar la hora de ejecucion
         $antes = date('Y-m-d H:i:s');
         $servicio->UndoChargeCycle(42);
         $despues = date('Y-m-d H:i:s');
@@ -153,7 +153,7 @@ final class BatteriesServiceTest extends TestCase
     }
 
     // 8. UndoChargeCycle
-    // Rechaza deshacer una carga inexistente o ya deshecha.
+    // Rechaza deshacer una carga inexistente o ya deshecha
     public function test_RechazaDeshacerUnaCargaNoDisponible(): void
     {
         $servicio = $this->crearServicioParaDeshacerCarga(42, null);

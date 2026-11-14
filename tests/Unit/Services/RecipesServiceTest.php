@@ -1,7 +1,7 @@
 <?php
 
 // Tzu Rue Hsu
-// 8 pruebas unitarias de RecipesService.php
+// 8 pruebas unitarias de RecipesService
 
 namespace Grocy\Tests\Unit\Services;
 
@@ -29,7 +29,7 @@ abstract class RecipeShoppingListRowStub
 final class RecipesServiceTest extends TestCase
 {
     // 1. CopyRecipe
-    // Rechaza copiar una receta que no existe.
+    // Rechaza copiar una receta que no existe
     public function test_RechazaCopiarRecetaInexistente(): void
     {
         $servicio = $this->crearServicioSinReceta(999);
@@ -41,7 +41,7 @@ final class RecipesServiceTest extends TestCase
     }
 
     // 2. ConsumeRecipe
-    // Rechaza consumir una receta que no existe.
+    // Rechaza consumir una receta que no existe
     public function test_RechazaConsumirRecetaInexistente(): void
     {
         $servicio = $this->crearServicioSinReceta(999);
@@ -53,7 +53,7 @@ final class RecipesServiceTest extends TestCase
     }
 
     // 3. GetRecipesResolved
-    // Devuelve la consulta original cuando no se pasa un filtro.
+    // Devuelve la consulta original cuando no se pasa un filtro
     public function test_DevuelveConsultaSinFiltro(): void
     {
         $consulta = $this->createMock(Result::class);
@@ -66,7 +66,7 @@ final class RecipesServiceTest extends TestCase
     }
 
     // 4. GetRecipesResolved
-    // Aplica el filtro recibido y devuelve la consulta filtrada.
+    // Aplica el filtro recibido y devuelve la consulta filtrada
     public function test_AplicaFiltroDeRecetas(): void
     {
         $filtro = ['recipe_id' => 5];
@@ -82,7 +82,7 @@ final class RecipesServiceTest extends TestCase
     }
 
     // 5. AddNotFulfilledProductsToShoppingList
-    // Agrega las cinco unidades faltantes cuando el ingrediente aún no está en la lista.
+    // Agrega las cinco unidades faltantes cuando el ingrediente aún no está en la lista
     public function test_AgregaIngredienteFaltante(): void
     {
         $fila = $this->createMock(RecipeShoppingListRowStub::class);
@@ -100,7 +100,7 @@ final class RecipesServiceTest extends TestCase
     }
 
     // 6. AddNotFulfilledProductsToShoppingList
-    // Si ya hay dos unidades en la lista, actualiza la misma fila a cinco.
+    // Si ya hay dos unidades en la lista, actualiza la misma fila a cinco
     public function test_ActualizaIngredienteEnLaLista(): void
     {
         $fila = $this->createMock(RecipeShoppingListRowStub::class);
@@ -119,7 +119,7 @@ final class RecipesServiceTest extends TestCase
     }
 
     // 7. AddNotFulfilledProductsToShoppingList
-    // Omite el ingrediente cuando su ID está en la lista de exclusión.
+    // Omite el ingrediente cuando su ID está en la lista de exclusion
     public function test_OmiteIngredienteExcluido(): void
     {
         $db = $this->createMock(RecipesDatabaseStub::class);
@@ -131,7 +131,7 @@ final class RecipesServiceTest extends TestCase
     }
 
     // 8. AddNotFulfilledProductsToShoppingList
-    // Omite el ingrediente cuando las cinco unidades ya están en la lista.
+    // Omite el ingrediente cuando las cinco unidades ya están en la lista
     public function test_OmiteIngredienteConFaltanteCubierto(): void
     {
         $db = $this->createMock(RecipesDatabaseStub::class);
@@ -179,7 +179,7 @@ final class RecipesServiceTest extends TestCase
         if ($ingredientes === null) {
             $servicio = (new \ReflectionClass(RecipesService::class))->newInstanceWithoutConstructor();
         } else {
-            // Usa los ingredientes de prueba sin consultar SQLite.
+            // Usa los ingredientes de prueba sin consultar con SQLite
             $servicio = $this->getMockBuilder(RecipesService::class)->disableOriginalConstructor()->onlyMethods(['GetRecipesPosResolved'])->getMock();
             $servicio->expects($this->once())->method('GetRecipesPosResolved')->willReturn($ingredientes);
         }

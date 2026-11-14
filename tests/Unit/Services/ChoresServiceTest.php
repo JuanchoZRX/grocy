@@ -1,7 +1,7 @@
 <?php
 
 // Tzu Rue Hsu
-// 9 pruebas unitarias de ChoresService.php
+// 9 pruebas unitarias de ChoresService
 
 namespace Grocy\Tests\Unit\Services;
 
@@ -37,7 +37,7 @@ abstract class ChoreLogRowStub
 final class ChoresServiceTest extends TestCase
 {
     // 1. TrackChore
-    // Guarda la ejecución normal, de solo fecha u omitida y devuelve su ID.
+    // Guarda la ejecución normal, de solo fecha u omitida y devuelve su ID
     #[DataProvider('registrosDeEjecucion')]
     public function test_GuardaEjecucionYDevuelveSuId(int $soloFecha, bool $omitida, string $fechaGuardada, int $omitidaGuardada): void
     {
@@ -74,15 +74,13 @@ final class ChoresServiceTest extends TestCase
 
     public static function registrosDeEjecucion(): array
     {
-        return [
-            'ejecución normal' => [0, false, '2026-11-12 15:30:00', 0],
-            'solo fecha' => [1, false, '2026-11-12 00:00:00', 0],
-            'ejecución omitida' => [0, true, '2026-11-12 15:30:00', 1]
-        ];
+        return ['ejecución normal' => [0, false, '2026-11-12 15:30:00', 0],
+                'solo fecha' => [1, false, '2026-11-12 00:00:00', 0],
+                'ejecución omitida' => [0, true, '2026-11-12 15:30:00', 1]];
     }
 
     // 2. TrackChore
-    // Rechaza registrar una tarea que no existe.
+    // Rechaza registrar una tarea que no existe
     public function test_RechazaRegistrarTareaInexistente(): void
     {
         $db = $this->createMock(ChoresDatabaseStub::class);
@@ -96,7 +94,7 @@ final class ChoresServiceTest extends TestCase
     }
 
     // 3. TrackChore
-    // Rechaza registrar una tarea para un usuario inexistente.
+    // Rechaza registrar una tarea para un usuario inexistente
     public function test_RechazaRegistrarTareaParaUsuarioInexistente(): void
     {
         $db = $this->crearDBParaRegistrar((object) ['id' => 5], null);
@@ -108,7 +106,7 @@ final class ChoresServiceTest extends TestCase
     }
 
     // 4. TrackChore
-    // Rechaza omitir una tarea que se ejecuta manualmente.
+    // Rechaza omitir una tarea que se ejecuta manualmente
     public function test_RechazaOmitirTareaSinHorario(): void
     {
         $tarea = (object) [
@@ -125,14 +123,14 @@ final class ChoresServiceTest extends TestCase
     }
 
     // 5. UndoChoreExecution
-    // Marca la ejecución como deshecha y pide recalcular la asignación.
+    // Marca la ejecucion como deshecha y pide recalcular la asignacion
     public function test_DeshaceEjecucionYRecalculaAsignacion(): void
     {
         $fila = $this->createMock(ChoreLogRowStub::class);
         $fila->chore_id = 5;
         $fila->expects($this->once())->method('update')->with($this->callback(
             static fn (array $datos): bool => ($datos['undone'] ?? null) === 1
-                && preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/D', $datos['undone_timestamp'] ?? '') === 1
+            && preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/D', $datos['undone_timestamp'] ?? '') === 1
         ));
         $db = $this->crearDBParaDeshacer($fila);
 
@@ -140,7 +138,7 @@ final class ChoresServiceTest extends TestCase
     }
 
     // 6. UndoChoreExecution
-    // Rechaza deshacer una ejecución inexistente o ya deshecha.
+    // Rechaza deshacer una ejecución inexistente o ya deshecha
     public function test_RechazaDeshacerEjecucionNoDisponible(): void
     {
         $db = $this->crearDBParaDeshacer(null);
@@ -152,7 +150,7 @@ final class ChoresServiceTest extends TestCase
     }
 
     // 7. MergeChores
-    // Rechaza fusionar una tarea consigo misma.
+    // Rechaza fusionar una tarea consigo misma
     public function test_RechazaFusionarUnaTareaConsigoMisma(): void
     {
         $db = $this->createStub(ChoresDatabaseStub::class);
@@ -199,7 +197,7 @@ final class ChoresServiceTest extends TestCase
 
     private function crearServicioConReasignacionSimulada(ChoresDatabaseStub $db, int $tareaId): ChoresService
     {
-        // Aísla el registro de la lógica de asignación.
+        // Aisla el registro de la logica de asignacion
         $servicio = $this->getMockBuilder(ChoresService::class)->disableOriginalConstructor()->onlyMethods(['CalculateNextExecutionAssignment'])->getMock();
         $servicio->expects($this->once())->method('CalculateNextExecutionAssignment')->with($tareaId);
 

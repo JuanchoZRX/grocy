@@ -5,17 +5,11 @@ namespace Grocy\Tests\Unit\Services;
 use Grocy\Services\DatabaseService;
 use Grocy\Services\StockService;
 
-
-// LocalizationService usa GROCY_LOCALE, que normalmente define LocaleMiddleware.
-
+// LocalizationService usa GROCY_LOCALE, que normalmente define LocaleMiddleware
 if (!defined('GROCY_LOCALE')) define('GROCY_LOCALE', GROCY_DEFAULT_LOCALE);
-
-
 
 final class StockServiceTest extends \ServiceTestCase
 {
-    // Datos de la plantilla de pruebas.
-	
     private const nombreProducto = 'Patata';
     private const codigoBarras = '7501234567890';
     private const precio = 1000.0;
@@ -25,10 +19,7 @@ final class StockServiceTest extends \ServiceTestCase
     private int $ubicacionId;
     private int $productoId;
 
-
-
-    // Prepara la base y crea el producto de prueba con su código de barras.
-
+    // Prepara la base y crea el producto de prueba con su codigo de barras
     protected function setUp(): void
     {
         parent::setUp();
@@ -50,15 +41,14 @@ final class StockServiceTest extends \ServiceTestCase
     }
 
 
-    // Crea una instancia nueva de StockService para cada uso.
+    // Crea una instancia nueva de StockService para cada uso
     private function servicio(): StockService
     {
         return new StockService();
     }
 
 
-    // Inserta un lote de stock del producto con la fecha de vencimiento indicada.
-
+    // Inserta un lote de stock del producto con la fecha de vencimiento indicada
     private function agregarStock(float $cantidad, string $vencimiento = '+30 days'): void
     {
         $this->db->insert('stock', [
@@ -71,16 +61,14 @@ final class StockServiceTest extends \ServiceTestCase
     }
 
 
-    // Suma las cantidades de todos los lotes del producto.
-
+    // Suma las cantidades de todos los lotes del producto
     private function stockTotal(): float
     {
         return $this->db->stock()->where('product_id = :1', $this->productoId)->sum('amount');
     }
 
 
-    // Registra una compra del producto con la cantidad indicada.
-
+    // Registra una compra del producto con la cantidad indicada
     private function agregarCompra(float $cantidad): void
     {
         $this->servicio()->AddProduct($this->productoId, $cantidad, null, StockService::TRANSACTION_TYPE_PURCHASE, date(self::fecha), self::precio);
@@ -89,11 +77,10 @@ final class StockServiceTest extends \ServiceTestCase
 
 
     /**
-     * Prueba 1: GetStockEntry devuelve una entrada por id.
-     * Qué prueba: la cantidad guardada.
-     * Se espera: 9 unidades.
+     * Prueba 1: GetStockEntry devuelve una entrada por id
+     * Qué prueba: la cantidad guardada
+     * Se espera: 9 unidades
      */
-
     public function test_ObtieneEntradaDeStock(): void
     {
         // Arrange
@@ -103,14 +90,11 @@ final class StockServiceTest extends \ServiceTestCase
         $this->assertEquals(9.0, $this->servicio()->GetStockEntry($this->db->lastInsertId())->amount);
     }
 
-
-
     /**
-     * Prueba 2: GetProductStockEntries lista los lotes del producto.
-     * Qué prueba: una fila por lote.
-     * Se espera: una entrada con 5 unidades.
+     * Prueba 2: GetProductStockEntries lista los lotes del producto
+     * Qué prueba: una fila por lote
+     * Se espera: una entrada con 5 unidades
      */
-
     public function test_ListaLotesDelProducto(): void
     {
         // Arrange
@@ -127,11 +111,10 @@ final class StockServiceTest extends \ServiceTestCase
 
 
     /**
-     * Prueba 3: GetLocationStockEntries lista el stock de una ubicación.
-     * Qué prueba: el filtro por ubicación.
-     * Se espera: una entrada con 4 unidades.
+     * Prueba 3: GetLocationStockEntries lista el stock de una ubicación
+     * Qué prueba: el filtro por ubicación
+     * Se espera: una entrada con 4 unidades
      */
-
     public function test_ListaStockDeUbicacion(): void
     {
         // Arrange
@@ -145,14 +128,11 @@ final class StockServiceTest extends \ServiceTestCase
         $this->assertEquals(4.0, $entradas->fetch()->amount);
     }
 
-
-
     /**
-     * Prueba 4: GetProductStockLocations lista ubicaciones con stock.
-     * Qué prueba: la ubicación del lote.
-     * Se espera: una fila con 5 unidades.
+     * Prueba 4: GetProductStockLocations lista ubicaciones con stock
+     * Qué prueba: la ubicación del lote
+     * Se espera: una fila con 5 unidades
      */
-
     public function test_ListaUbicacionesConStock(): void
     {
         // Arrange
@@ -166,14 +146,11 @@ final class StockServiceTest extends \ServiceTestCase
         $this->assertEquals(5.0, $filas->fetch()->amount);
     }
 
-
-
     /**
-     * Prueba 5: GetCurrentStockLocations devuelve el stock por ubicación.
-     * Qué prueba: la vista incluye el producto.
-     * Se espera: una fila con 6 unidades.
+     * Prueba 5: GetCurrentStockLocations devuelve el stock por ubicación
+     * Qué prueba: la vista incluye el producto
+     * Se espera: una fila con 6 unidades
      */
-
     public function test_DevuelveStockPorUbicacion(): void
     {
         // Arrange
@@ -183,14 +160,11 @@ final class StockServiceTest extends \ServiceTestCase
         $this->assertEquals(6.0, $this->servicio()->GetCurrentStockLocations()[0]->amount);
     }
 
-
-
     /**
-     * Prueba 6: GetCurrentStockLocationContent devuelve el contenido.
-     * Qué prueba: la consulta de contenido con stock.
-     * Se espera: una fila con 7 unidades.
+     * Prueba 6: GetCurrentStockLocationContent devuelve el contenido
+     * Qué prueba: la consulta de contenido con stock
+     * Se espera: una fila con 7 unidades
      */
-
     public function test_DevuelveContenidoDeUbicacion(): void
     {
         // Arrange
@@ -200,14 +174,11 @@ final class StockServiceTest extends \ServiceTestCase
         $this->assertEquals(7.0, $this->servicio()->GetCurrentStockLocationContent()[0]->amount);
     }
 
-
-
     /**
-     * Prueba 7: GetCurrentStock lista el stock actual.
-     * Qué prueba: la cantidad total del producto.
-     * Se espera: una fila con 4 unidades.
+     * Prueba 7: GetCurrentStock lista el stock actual
+     * Qué prueba: la cantidad total del producto
+     * Se espera: una fila con 4 unidades
      */
-
     public function test_ListaStockActual(): void
     {
         // Arrange
@@ -217,14 +188,11 @@ final class StockServiceTest extends \ServiceTestCase
         $this->assertEquals(4.0, $this->servicio()->GetCurrentStock()[0]->amount);
     }
 
-
-
     /**
-     * Prueba 8: GetProductDetails devuelve el detalle del producto.
-     * Qué prueba: nombre y stock del detalle.
-     * Se espera: el producto de prueba con 6 unidades.
+     * Prueba 8: GetProductDetails devuelve el detalle del producto
+     * Qué prueba: nombre y stock del detalle
+     * Se espera: el producto de prueba con 6 unidades
      */
-
     public function test_DevuelveDetalleDelProducto(): void
     {
         // Arrange
@@ -238,28 +206,22 @@ final class StockServiceTest extends \ServiceTestCase
         $this->assertEquals(6.0, $detalles['stock_amount']);
     }
 
-
-
     /**
-     * Prueba 9: GetProductIdFromBarcode encuentra el producto.
-     * Qué prueba: el código creado en la preparación.
-     * Se espera: el id del producto.
+     * Prueba 9: GetProductIdFromBarcode encuentra el producto
+     * Qué prueba: el código creado en la preparación
+     * Se espera: el id del producto
      */
-
     public function test_ObtieneIdPorCodigoDeBarras(): void
     {
         // Act y Assert
         $this->assertSame($this->productoId, $this->servicio()->GetProductIdFromBarcode(self::codigoBarras));
     }
 
-
-
     /**
-     * Prueba 10: GetProductPriceHistory devuelve una compra.
-     * Qué prueba: la vista toma los movimientos de compra.
-     * Se espera: una entrada con el precio configurado.
+     * Prueba 10: GetProductPriceHistory devuelve una compra
+     * Qué prueba: la vista toma los movimientos de compra
+     * Se espera: una entrada con el precio configurado
      */
-
     public function test_DevuelveHistorialDePrecios(): void
     {
         // Arrange
@@ -273,28 +235,22 @@ final class StockServiceTest extends \ServiceTestCase
         $this->assertEquals(self::precio, $historial[0]['price']);
     }
 
-
-
     /**
-     * Prueba 11: GetMissingProducts detecta stock faltante.
-     * Qué prueba: mínimo 5 sin stock.
-     * Se espera: faltante de 5 unidades.
+     * Prueba 11: GetMissingProducts detecta stock faltante
+     * Qué prueba: mínimo 5 sin stock
+     * Se espera: faltante de 5 unidades
      */
-
     public function test_DetectaProductosFaltantes(): void
     {
         // Act y Assert
         $this->assertEquals(5.0, $this->servicio()->GetMissingProducts()[0]->amount_missing);
     }
 
-
-
     /**
-     * Prueba 12: GetDueProducts detecta un próximo vencimiento.
-     * Qué prueba: stock que vence dentro del rango.
-     * Se espera: una fila del producto.
+     * Prueba 12: GetDueProducts detecta un próximo vencimiento
+     * Qué prueba: stock que vence dentro del rango
+     * Se espera: una fila del producto
      */
-
     public function test_DetectaProductosPorVencer(): void
     {
         // Arrange
@@ -304,14 +260,11 @@ final class StockServiceTest extends \ServiceTestCase
         $this->assertSame(1, count($this->servicio()->GetDueProducts(5)));
     }
 
-
-
     /**
-     * Prueba 13: GetExpiredProducts detecta un producto vencido.
-     * Qué prueba: stock con fecha anterior a hoy.
-     * Se espera: una fila del producto.
+     * Prueba 13: GetExpiredProducts detecta un producto vencido
+     * Qué prueba: stock con fecha anterior a hoy
+     * Se espera: una fila del producto
      */
-
     public function test_DetectaProductosVencidos(): void
     {
         // Arrange
@@ -321,14 +274,11 @@ final class StockServiceTest extends \ServiceTestCase
         $this->assertSame(1, count($this->servicio()->GetExpiredProducts()));
     }
 
-
-
     /**
-     * Prueba 14: AddProduct registra stock y booking.
-     * Qué prueba: una compra crea stock y movimiento.
-     * Se espera: 5 unidades y 1 booking.
+     * Prueba 14: AddProduct registra stock y booking
+     * Qué prueba: una compra crea stock y movimiento
+     * Se espera: 5 unidades y 1 booking
      */
-
     public function test_RegistraCompra(): void
     {
         // Act
@@ -342,11 +292,10 @@ final class StockServiceTest extends \ServiceTestCase
 
 
     /**
-     * Prueba 15: ConsumeProduct descuenta stock.
-     * Qué prueba: consumir 3 de 10.
-     * Se espera: 7 unidades.
+     * Prueba 15: ConsumeProduct descuenta stock
+     * Qué prueba: consumir 3 de 10
+     * Se espera: 7 unidades
      */
-
     public function test_DescuentaStockAlConsumir(): void
     {
         // Arrange
@@ -359,14 +308,11 @@ final class StockServiceTest extends \ServiceTestCase
         $this->assertSame(7.0, $this->stockTotal());
     }
 
-
-
     /**
-     * Prueba 16: InventoryProduct ajusta el stock.
-     * Qué prueba: corregir de 10 a 12.
-     * Se espera: 12 unidades.
+     * Prueba 16: InventoryProduct ajusta el stock
+     * Qué prueba: corregir de 10 a 12
+     * Se espera: 12 unidades
      */
-
     public function test_AjustaStockAlInventariar(): void
     {
         // Arrange
@@ -379,14 +325,11 @@ final class StockServiceTest extends \ServiceTestCase
         $this->assertSame(12.0, $this->stockTotal());
     }
 
-
-
     /**
-     * Prueba 17: OpenProduct marca stock abierto.
-     * Qué prueba: abrir 4 de 10 separa el lote.
-     * Se espera: 4 abiertas y 6 cerradas.
+     * Prueba 17: OpenProduct marca stock abierto
+     * Qué prueba: abrir 4 de 10 separa el lote
+     * Se espera: 4 abiertas y 6 cerradas
      */
-
     public function test_MarcaStockAbierto(): void
     {
         // Arrange
@@ -403,11 +346,10 @@ final class StockServiceTest extends \ServiceTestCase
 
 
     /**
-     * Prueba 18: CopyProduct duplica un producto.
-     * Qué prueba: copia con otro id y nombre con prefijo.
-     * Se espera: "Copy of Producto de prueba".
+     * Prueba 18: CopyProduct duplica un producto
+     * Qué prueba: copia con otro id y nombre con prefijo
+     * Se espera: "Copy of Producto de prueba"
      */
-
     public function test_DuplicaProducto(): void
     {
         // Act
@@ -418,14 +360,11 @@ final class StockServiceTest extends \ServiceTestCase
         $this->assertSame('Copy of ' . self::nombreProducto, $this->db->products()->where('id = :1', $idCopia)->fetch()->name);
     }
 
-
-
     /**
-     * Prueba 19: AddProductToShoppingList agrega un producto.
-     * Qué prueba: la entrada con cantidad.
-     * Se espera: cantidad 2.
+     * Prueba 19: AddProductToShoppingList agrega un producto
+     * Qué prueba: la entrada con cantidad
+     * Se espera: cantidad 2
      */
-
     public function test_AgregaProductoALista(): void
     {
         // Act
@@ -435,14 +374,11 @@ final class StockServiceTest extends \ServiceTestCase
         $this->assertEquals(2.0, $this->db->shopping_list()->where('product_id = :1', $this->productoId)->fetch()->amount);
     }
 
-
-
     /**
-     * Prueba 20: RemoveProductFromShoppingList quita un producto.
-     * Qué prueba: quitar la cantidad total.
-     * Se espera: cero entradas.
+     * Prueba 20: RemoveProductFromShoppingList quita un producto
+     * Qué prueba: quitar la cantidad total
+     * Se espera: cero entradas
      */
-
     public function test_QuitaProductoDeLista(): void
     {
         // Arrange
@@ -455,14 +391,11 @@ final class StockServiceTest extends \ServiceTestCase
         $this->assertSame(0, $this->db->shopping_list()->where('product_id = :1', $this->productoId)->count());
     }
 
-
-
     /**
-     * Prueba 21: ClearShoppingList borra la lista.
-     * Qué prueba: limpiar elimina las entradas.
-     * Se espera: cero entradas.
+     * Prueba 21: ClearShoppingList borra la lista
+     * Qué prueba: limpiar elimina las entradas
+     * Se espera: cero entradas
      */
-
     public function test_VaciaListaDeCompras(): void
     {
         // Arrange
@@ -475,14 +408,11 @@ final class StockServiceTest extends \ServiceTestCase
         $this->assertSame(0, $this->db->shopping_list()->where('product_id = :1', $this->productoId)->count());
     }
 
-
-
     /**
-     * Prueba 22: AddMissingProductsToShoppingList agrega faltantes.
-     * Qué prueba: mínimo 5 sin stock.
-     * Se espera: entrada con cantidad 5.
+     * Prueba 22: AddMissingProductsToShoppingList agrega faltantes
+     * Qué prueba: mínimo 5 sin stock
+     * Se espera: entrada con cantidad 5
      */
-
     public function test_AgregaFaltantesALista(): void
     {
         // Act
@@ -492,14 +422,11 @@ final class StockServiceTest extends \ServiceTestCase
         $this->assertEquals(5.0, $this->db->shopping_list()->where('product_id = :1', $this->productoId)->fetch()->amount);
     }
 
-
-
     /**
-     * Prueba 23: GetShoppinglistInPrintableStrings devuelve la lista.
-     * Qué prueba: el producto aparece en el texto.
-     * Se espera: una línea con el nombre del producto.
+     * Prueba 23: GetShoppinglistInPrintableStrings devuelve la lista
+     * Qué prueba: el producto aparece en el texto
+     * Se espera: una línea con el nombre del producto
      */
-
     public function test_DevuelveListaEnTexto(): void
     {
         // Arrange
@@ -513,14 +440,11 @@ final class StockServiceTest extends \ServiceTestCase
         $this->assertStringContainsString(self::nombreProducto, $lineas[0]);
     }
 
-
-
     /**
-     * Prueba 24: AddExpiredProductsToShoppingList agrega vencidos.
-     * Qué prueba: un producto vencido se agrega a la lista.
-     * Se espera: entrada con cantidad 1.
+     * Prueba 24: AddExpiredProductsToShoppingList agrega vencidos
+     * Qué prueba: un producto vencido se agrega a la lista
+     * Se espera: entrada con cantidad 1
      */
-
     public function test_AgregaVencidosALista(): void
     {
         // Arrange
@@ -533,19 +457,21 @@ final class StockServiceTest extends \ServiceTestCase
         $this->assertEquals(1.0, $this->db->shopping_list()->where('product_id = :1', $this->productoId)->fetch()->amount);
     }
 
-
-
     /**
-     * Prueba 25: CompactStockEntries une entradas iguales.
-     * Qué prueba: dos lotes idénticos se juntan.
-     * Se espera: una entrada con 15 unidades.
+     * Prueba 25: CompactStockEntries une entradas iguales
+     * Qué prueba: dos lotes idénticos se juntan
+     * Se espera: una entrada con 15 unidades
      */
-
     public function test_UneEntradasDeStock(): void
     {
         // Arrange
-        $this->agregarStock(10);
-        $this->agregarStock(5);
+        // Esto fija las mismas fechas para que los dos lotes se puedan unir
+        $lote = ['product_id' => $this->productoId,
+                 'best_before_date' => '2026-12-14',
+                 'purchased_date' => '2026-11-13 10:00:00',
+                 'location_id' => $this->ubicacionId];
+        $this->db->insert('stock', [$lote + ['amount' => 10, 'stock_id' => 'lote-a'],
+                                    $lote + ['amount' => 5, 'stock_id' => 'lote-b']]);
 
         // Act
         $this->servicio()->CompactStockEntries($this->productoId);

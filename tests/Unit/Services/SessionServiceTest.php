@@ -5,7 +5,7 @@ namespace Grocy\Tests\Unit\Services;
 use Grocy\Services\SessionService;
 use PHPUnit\Framework\TestCase;
 
-// Para simular las consultas.
+// Para simular las consultas
 interface SessionsQueryStub
 {
     public function where($condicion, ...$valores);
@@ -14,7 +14,7 @@ interface SessionsQueryStub
     public function createRow($datos);
 }
 
-// Para simular la base de datos.
+// Para simular la base de datos
 interface SessionsDatabaseStub
 {
     public function sessions();
@@ -37,37 +37,31 @@ interface DefaultUserQueryStub
 
 class SessionServiceTest extends TestCase
 {
-    // Crea el servicio con la BD simulada.
+    // Crea el servicio con la BD simulada
     private function crearServicioConDB(object $db): SessionService
     {
         $service = (new \ReflectionClass(SessionService::class))->newInstanceWithoutConstructor();
 
-        $propiedad = new \ReflectionProperty(
-            SessionService::class,
-            'DB'
-        );
+        $propiedad = new \ReflectionProperty(SessionService::class, 'DB');
         $propiedad->setValue($service, $db);
 
         return $service;
     }
 
-    // Prueba que ValidateToken devuelve false para un token vacío.
+    // Prueba que ValidateToken devuelve false para un token vacio
     public function test_RechazaTokenVacio(): void
     {
         // Arrange
         $service = (new \ReflectionClass(SessionService::class))->newInstanceWithoutConstructor();
 
         // Act
-        $resultado = $service->ValidateToken(
-            SessionService::SESSION_TOKEN_TYPE_ACCESS,
-            ''
-        );
+        $resultado = $service->ValidateToken(SessionService::SESSION_TOKEN_TYPE_ACCESS, '');
 
         // Assert
         $this->assertFalse($resultado);
     }
 
-    // Prueba que ValidateToken devuelve false para un token inexistente.
+    // Prueba que ValidateToken devuelve false para un token inexistente
     public function test_RechazaTokenInexistente(): void
     {
         // Arrange: consulta sin resultados.
@@ -81,25 +75,19 @@ class SessionServiceTest extends TestCase
         $service = $this->crearServicioConDB($db);
 
         // Act
-        $resultado = $service->ValidateToken(
-            SessionService::SESSION_TOKEN_TYPE_ACCESS,
-            'token-inexistente'
-        );
+        $resultado = $service->ValidateToken(SessionService::SESSION_TOKEN_TYPE_ACCESS, 'token-inexistente');
 
         // Assert
         $this->assertFalse($resultado);
     }
 
-    // Prueba que GetUserByToken devuelve el usuario asociado a una sesión existente.
+    // Prueba que GetUserByToken devuelve el usuario asociado a una sesión existente
     public function test_ObtieneUsuarioDeTokenExistente(): void
     {
         // Arrange: simular una sesión existente.
         $registro = (object) ['user_id' => 7];
 
-        $usuario = (object) [
-            'id' => 7,
-            'username' => 'admin'
-        ];
+        $usuario = (object) ['id' => 7, 'username' => 'admin'];
 
         $consulta = $this->createStub(SessionsQueryStub::class);
         $consulta->method('where')->willReturn($consulta);
@@ -112,16 +100,13 @@ class SessionServiceTest extends TestCase
         $service = $this->crearServicioConDB($db);
 
         // Act
-        $resultado = $service->GetUserByToken(
-            SessionService::SESSION_TOKEN_TYPE_ACCESS,
-            'token-valido'
-        );
+        $resultado = $service->GetUserByToken(SessionService::SESSION_TOKEN_TYPE_ACCESS, 'token-valido');
 
         // Assert
         $this->assertSame($usuario, $resultado);
     }
 
-    // Prueba de GetUserByToken para devolver null con un token inexistente.
+    // Prueba de GetUserByToken para devolver null con un token inexistente
     public function test_ObtieneUsuarioDeTokenInexistente(): void
     {
         // Arrange: simular que no existe una sesión.
@@ -135,23 +120,17 @@ class SessionServiceTest extends TestCase
         $service = $this->crearServicioConDB($db);
 
         // Act
-        $resultado = $service->GetUserByToken(
-            SessionService::SESSION_TOKEN_TYPE_ACCESS,
-            'token-inexistente'
-        );
+        $resultado = $service->GetUserByToken(SessionService::SESSION_TOKEN_TYPE_ACCESS, 'token-inexistente');
 
         // Assert
         $this->assertNull($resultado);
     }
 
-    // Prueba de GetDefaultUser para devolver el usuario predeterminado.
+    // Prueba de GetDefaultUser para devolver el usuario predeterminado
     public function test_ObtieneUsuarioPredeterminado(): void
     {
         // Arrange
-        $usuario = (object) [
-            'id' => 1,
-            'username' => 'admin'
-        ];
+        $usuario = (object) ['id' => 1, 'username' => 'admin'];
 
         $consulta = $this->createStub(DefaultUserQueryStub::class);
         $consulta->method('orderBy')->willReturn($consulta);
@@ -170,7 +149,7 @@ class SessionServiceTest extends TestCase
         $this->assertSame($usuario, $resultado);
     }
 
-    // Prueba que DeleteToken solicita eliminar el token indicado.
+    // Prueba que DeleteToken solicita eliminar el token indicado
     public function test_EliminaTokenExistente(): void
     {
         // Arrange: simula la consulta del token.
@@ -185,20 +164,14 @@ class SessionServiceTest extends TestCase
         $consultaExpirados->method('where')->willReturn($consultaExpirados);
 
         $db = $this->createStub(SessionsDatabaseStub::class);
-        $db->method('sessions')->willReturnOnConsecutiveCalls(
-            $consultaToken,
-            $consultaExpirados
-        );
+        $db->method('sessions')->willReturnOnConsecutiveCalls($consultaToken,$consultaExpirados);
         $service = $this->crearServicioConDB($db);
 
         // Act
-        $service->DeleteToken(
-            SessionService::SESSION_TOKEN_TYPE_ACCESS,
-            'token-de-prueba'
-        );
+        $service->DeleteToken(SessionService::SESSION_TOKEN_TYPE_ACCESS, 'token-de-prueba');
     }
 
-    // Prueba de DeleteToken para eliminar tokens expirados.
+    // Prueba de DeleteToken para eliminar tokens expirados
     public function test_EliminaTokensExpirados(): void
     {
         // Arrange
@@ -210,20 +183,14 @@ class SessionServiceTest extends TestCase
         $consultaExpirados->expects($this->once())->method('delete');
 
         $db = $this->createStub(SessionsDatabaseStub::class);
-        $db->method('sessions')->willReturnOnConsecutiveCalls(
-            $consultaToken,
-            $consultaExpirados
-        );
+        $db->method('sessions')->willReturnOnConsecutiveCalls($consultaToken, $consultaExpirados);
         $service = $this->crearServicioConDB($db);
 
         // Act
-        $service->DeleteToken(
-            SessionService::SESSION_TOKEN_TYPE_ACCESS,
-            'token-de-prueba'
-        );
+        $service->DeleteToken(SessionService::SESSION_TOKEN_TYPE_ACCESS, 'token-de-prueba');
     }
 
-    // Prueba que CreateToken genera un token con el formato correcto.
+    // Prueba que CreateToken genera un token con el formato correcto
     public function test_GeneraTokenConFormatoCorrecto(): void
     {
         // Arrange
@@ -239,28 +206,20 @@ class SessionServiceTest extends TestCase
         $service = $this->crearServicioConDB($db);
 
         // Act
-        $resultado = $service->CreateToken(
-            SessionService::SESSION_TOKEN_TYPE_ACCESS,
-            7,
-            'Microsoft Edge'
-        );
+        $resultado = $service->CreateToken(SessionService::SESSION_TOKEN_TYPE_ACCESS, 7, 'Microsoft Edge');
 
         // Assert
-        $this->assertMatchesRegularExpression(
-            '/^[0-9a-f]{64}$/',
-            $resultado
-        );
+        $this->assertMatchesRegularExpression('/^[0-9a-f]{64}$/',$resultado);
     }
 
-    // Prueba que CreateToken solicita guardar el registro de sesión generado.
+    // Prueba que CreateToken solicita guardar el registro de sesión generado
     public function test_GuardaTokenGenerado(): void
     {
         // Arrange
         $fila = $this->createMock(SessionRowStub::class);
 
         // Expect
-        $fila->expects($this->once())
-            ->method('save');
+        $fila->expects($this->once())->method('save');
 
         $consulta = $this->createStub(SessionsQueryStub::class);
         $consulta->method('createRow')->willReturn($fila);
@@ -272,10 +231,6 @@ class SessionServiceTest extends TestCase
         $service = $this->crearServicioConDB($db);
 
         // Act
-        $service->CreateToken(
-            SessionService::SESSION_TOKEN_TYPE_ACCESS,
-            7,
-            'Microsoft Edge'
-        );
+        $service->CreateToken(SessionService::SESSION_TOKEN_TYPE_ACCESS, 7, 'Microsoft Edge');
     }
 }
