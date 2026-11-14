@@ -17,6 +17,7 @@ interface LocalizationCatalogStub
 
 final class LocalizationServiceTest extends TestCase
 {
+    
     private function crearServicioConCatalogo(object $catalogo): LocalizationService
     {
         $service = (new \ReflectionClass(LocalizationService::class))
@@ -35,7 +36,7 @@ final class LocalizationServiceTest extends TestCase
     // Prueba de GetPluralCount para obtener la cantidad de formas plurales.
     public function test_ObtieneCantidadDeFormasPlurales(): void
     {
-        // Arrange
+    
         $catalogo = $this->createMock(LocalizationCatalogStub::class);
 
         $catalogo->expects($this->once())->method('getHeader')
@@ -47,10 +48,10 @@ final class LocalizationServiceTest extends TestCase
 
         $service = $this->crearServicioConCatalogo($catalogo);
 
-        // Act
+  
         $resultado = $service->GetPluralCount();
 
-        // Assert
+       
         $this->assertSame(3, $resultado);
     }
 
