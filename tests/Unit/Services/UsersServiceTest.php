@@ -63,6 +63,8 @@ final class UsersServiceTest extends TestCase
 
     private function crearServicioConDB(object $db): UsersService
     {
+
+    // Crea una instancia de UsersService sin llamar al constructor 
         $service = (new \ReflectionClass(UsersService::class))
             ->newInstanceWithoutConstructor();
 

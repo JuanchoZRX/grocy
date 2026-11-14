@@ -45,7 +45,7 @@ final class UserfieldsServiceTest extends TestCase
         $propiedad = new \ReflectionProperty(BaseService::class, 'DB');
         $propiedad->setValue($service, $db);
 
-        // Evita leer el archivo OpenAPI real.
+        // Evita leer el archivo OpenAPI real
         $spec = json_decode('{
             "components": {
                 "schemas": {
@@ -90,7 +90,7 @@ final class UserfieldsServiceTest extends TestCase
     // Prueba de GetAllFields para obtener todos los campos.
     public function test_ObtieneTodosLosCampos(): void
     {
-        // Arrange
+        
         $campos = [
             (object) ['id' => 1, 'name' => 'Color'],
             (object) ['id' => 2, 'name' => 'Marca']
@@ -101,14 +101,14 @@ final class UserfieldsServiceTest extends TestCase
             ->with('name', 'COLLATE NOCASE')->willReturnSelf();
         $consulta->method('fetchAll')->willReturn($campos);
 
-        // Act
+        
         $db = $this->crearDB();
         $db->method('userfields')->willReturn($consulta);
      
         $service = $this->crearServicioConDB($db);
         $resultado = $service->GetAllFields();
 
-        // Assert
+        
         $this->assertSame($campos, $resultado);
     }
 
@@ -160,11 +160,12 @@ final class UserfieldsServiceTest extends TestCase
     public function test_ObtieneCampoPorId(): void
     {
         $campo = (object) ['id' => 7, 'name' => 'Color'];
-
+        
         $db = $this->createMock(UserfieldsDatabaseStub::class);
         $db->expects($this->once())->method('userfields')
             ->with(7)->willReturn($campo);
 
+        
         $service = $this->crearServicioConDB($db);
         $resultado = $service->GetField(7);
 

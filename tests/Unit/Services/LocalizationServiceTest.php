@@ -55,7 +55,7 @@ final class LocalizationServiceTest extends TestCase
     }
 
     // 2. GetPluralDefinition
-    // Prueba de GetPluralDefinition para obtener la definición plural predeterminada.
+    // Prueba de GetPluralDefinition para obtener la definición plural predeterminada
     public function test_ObtieneDefinicionPluralPredeterminada(): void
     {
         // Arrange: el catálogo no tiene configuración de plurales.
@@ -75,7 +75,7 @@ final class LocalizationServiceTest extends TestCase
     // Prueba de GetPoAsJsonString para obtener las traducciones como JSON.
     public function test_ObtieneTraduccionesComoJson(): void
     {
-        // Arrange
+        
         $json = '{"Hello":"Hola","Goodbye":"Adiós"}';
 
         $catalogo = $this->createStub(LocalizationCatalogStub::class);
@@ -83,10 +83,8 @@ final class LocalizationServiceTest extends TestCase
 
         $service = $this->crearServicioConCatalogo($catalogo);
 
-        // Act
         $resultado = $service->GetPoAsJsonString();
 
-        // Assert
         $this->assertSame($json, $resultado);
     }
 }
