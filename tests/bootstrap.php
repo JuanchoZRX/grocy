@@ -10,23 +10,9 @@ if (!is_dir(GROCY_DATAPATH))
 
 require __DIR__ . '/../packages/autoload.php';
 require __DIR__ . '/../config-dist.php';
-require __DIR__ . '/ServiceTestCase.php';
 
-$template = GROCY_DATAPATH . '/grocy_template.db';
-$database = GROCY_DATAPATH . '/grocy.db';
-
-// Crear una base limpia con todas las migraciones del proyecto.
-@unlink($template);
-@unlink($database);
-
-Grocy\Services\DatabaseMigrationService::GetInstance()->MigrateDatabase();
-
-// Cerrar conexiones antes de copiar: Windows bloquea archivos SQLite abiertos.
-ServiceTestCase::resetServiceState();
-
-if (!copy($database, $template))
+// LocalizationService usa GROCY_LOCALE, que normalmente define LocaleMiddleware
+if (!defined('GROCY_LOCALE'))
 {
-	throw new RuntimeException('No se pudo crear grocy_template.db');
+	define('GROCY_LOCALE', GROCY_DEFAULT_LOCALE);
 }
-
-@unlink($database);
