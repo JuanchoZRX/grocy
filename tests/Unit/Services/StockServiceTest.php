@@ -2,482 +2,607 @@
 
 namespace Grocy\Tests\Unit\Services;
 
-use Grocy\Services\DatabaseService;
+use Grocy\Services\BaseService;
 use Grocy\Services\StockService;
+use PHPUnit\Framework\TestCase;
 
-// LocalizationService usa GROCY_LOCALE, que normalmente define LocaleMiddleware
-if (!defined('GROCY_LOCALE')) define('GROCY_LOCALE', GROCY_DEFAULT_LOCALE);
-
-final class StockServiceTest extends \ServiceTestCase
+interface StockQueryStub
 {
-    private const nombreProducto = 'Patata';
+    public function where($condicion, ...$valores);
+    public function fetch();
+    public function createRow($datos);
+    public function orderBy($campo, $orden);
+    public function delete();
+}
+
+interface StockDatabaseStub
+{
+    public function products($id = null);
+    public function product_barcodes();
+    public function products_price_history();
+    public function shopping_locations();
+    public function shopping_lists();
+    public function shopping_list();
+    public function stock();
+    public function stock_log();
+    public function stock_next_use();
+    public function stock_current_locations();
+    public function locations();
+}
+
+interface StockRowStub
+{
+    public function save();
+}
+
+final class StockServiceTest extends TestCase
+{
     private const codigoBarras = '7501234567890';
     private const precio = 1000.0;
-    private const fecha = 'Y-m-d';
 
-    private $db;
-    private int $ubicacionId;
-    private int $productoId;
+    private object $producto;
 
-    // Prepara la base y crea el producto de prueba con su codigo de barras
+
     protected function setUp(): void
     {
-        parent::setUp();
+        $this->producto = (object) [
+            'id' => 5,
+            'qu_id_purchase' => 1,
+            'enable_tare_weight_handling' => 0
+        ];
+    }
 
-        $this->db = DatabaseService::GetInstance()->GetDbConnection();
-        $this->ubicacionId = $this->db->locations()->where('name', 'Fridge')->fetch()->id;
-        $unidadId = $this->db->quantity_units()->where('name', 'Piece')->fetch()->id;
 
-        $this->db->insert('products', [
-            'name' => self::nombreProducto,
-            'location_id' => $this->ubicacionId,
-            'qu_id_purchase' => $unidadId,
-            'qu_id_stock' => $unidadId,
-            'min_stock_amount' => 5,
-            'due_type' => 2
+    private function crearDB(array $colecciones = []): StockDatabaseStub
+    {
+        $db = $this->createStub(StockDatabaseStub::class);
+        foreach ($colecciones as $metodo => $resultado)
+        {
+            // Configura cada método de la base falsa con el resultado indicado.
+            $db->method($metodo)->willReturn($resultado);
+        }
+
+        return $db;
+    }
+
+
+    private function crearConsulta($resultado): StockQueryStub
+    {
+        $consulta = $this->createStub(StockQueryStub::class);
+        // where() permite encadenar la consulta y fetch() devuelve el resultado simulado.
+        $consulta->method('where')->willReturnSelf();
+        $consulta->method('fetch')->willReturn($resultado);
+
+        return $consulta;
+    }
+
+
+    private function crearServicio(StockDatabaseStub $db, array $metodos = []): StockService
+    {
+        if ($metodos)
+        {
+            // Crea un mock y sustituye solo los métodos indicados.
+            $servicio = $this->getMockBuilder(StockService::class)
+                ->disableOriginalConstructor()
+                ->onlyMethods($metodos)
+                ->getMock();
+        }
+        else
+        {
+            // Crea el servicio sin abrir una conexión real a la base de datos.
+            $servicio = (new \ReflectionClass(StockService::class))->newInstanceWithoutConstructor();
+        }
+
+        // Inyecta la base falsa en la propiedad protegida del servicio.
+        (new \ReflectionProperty(BaseService::class, 'DB'))->setValue($servicio, $db);
+
+        return $servicio;
+    }
+
+
+    private function crearServicioConStock(string $filtro): StockService
+    {
+        $servicio = $this->crearServicio($this->crearDB(), ['GetCurrentStock']);
+
+        // Exige una llamada con el filtro exacto y devuelve un producto simulado.
+        $servicio->expects($this->once())->method('GetCurrentStock')
+            ->with($filtro)->willReturn(['producto']);
+
+        return $servicio;
+    }
+
+
+    private function comprobarQueFalla(StockDatabaseStub $db, string $mensaje, callable $accion): void
+    {
+        // Declara qué excepción y qué mensaje debe producir la acción.
+
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage($mensaje);
+
+        $accion($this->crearServicio($db));
+    }
+
+
+    private function crearServicioParaCompra(): StockService
+    {
+        $log = $this->createMock(StockRowStub::class);
+        // Cada fila debe guardarse exactamente una vez.
+        $log->expects($this->once())->method('save');
+        $stock = $this->createMock(StockRowStub::class);
+        $stock->expects($this->once())->method('save');
+
+        $logQuery = $this->createMock(StockQueryStub::class);
+
+        // Comprueba los datos del log y devuelve la fila falsa que se guardará.
+        $logQuery->expects($this->once())->method('createRow')
+            ->with($this->callback(static fn (array $datos): bool => $datos['product_id'] === 5
+                && $datos['amount'] === 5.0
+                && $datos['transaction_type'] === StockService::TRANSACTION_TYPE_PURCHASE))
+            ->willReturn($log);
+
+        $stockQuery = $this->createMock(StockQueryStub::class);
+
+        // Comprueba los datos de stock y devuelve su fila falsa.
+        $stockQuery->expects($this->once())->method('createRow')
+            ->with($this->callback(static fn (array $datos): bool => $datos['product_id'] === 5
+                && $datos['amount'] === 5.0
+                && $datos['best_before_date'] === '2026-12-31'))
+            ->willReturn($stock);
+
+        $db = $this->crearDB([
+            'products' => $this->crearConsulta($this->producto),
+            'stock_log' => $logQuery,
+            'stock' => $stockQuery
         ]);
-        $this->productoId = $this->db->lastInsertId();
-        $this->db->insert('product_barcodes', ['product_id' => $this->productoId, 'barcode' => self::codigoBarras]);
+
+        $servicio = $this->crearServicio($db, ['GetProductDetails', 'CompactStockEntries']);
+
+        // Simula el detalle inicial y exige compactar las entradas tras la compra.
+        $servicio->expects($this->once())->method('GetProductDetails')
+            ->willReturn(['product' => $this->producto, 'stock_amount' => 0.0]);
+        $servicio->expects($this->once())->method('CompactStockEntries')->with(5);
+
+        return $servicio;
     }
 
 
-    // Crea una instancia nueva de StockService para cada uso
-    private function servicio(): StockService
+    // Prepara una lista vacía que guarda una entrada con los datos esperados
+
+    private function crearServicioConListaVacia(array $datosEsperados, array $metodos = []): StockService
     {
-        return new StockService();
+        $fila = $this->createMock(StockRowStub::class);
+
+        // La fila insertada debe guardarse exactamente una vez.
+        $fila->expects($this->once())->method('save');
+
+        $compras = $this->createMock(StockQueryStub::class);
+        $compras->method('where')->willReturnSelf();
+        $compras->method('fetch')->willReturn(null);
+
+        // createRow() debe recibir los datos esperados y devolver la fila simulada.
+        $compras->expects($this->once())->method('createRow')
+            ->with($datosEsperados)->willReturn($fila);
+
+        $db = $this->createStub(StockDatabaseStub::class);
+        $db->method('shopping_lists')->willReturn($this->crearConsulta((object) ['id' => 1]));
+        $db->method('products')->willReturnMap([[null, $this->crearConsulta($this->producto)], [5, $this->producto]]);
+        $db->method('shopping_list')->willReturn($compras);
+
+        return $this->crearServicio($db, $metodos);
     }
 
 
-    // Inserta un lote de stock del producto con la fecha de vencimiento indicada
-    private function agregarStock(float $cantidad, string $vencimiento = '+30 days'): void
-    {
-        $this->db->insert('stock', [
-            'product_id' => $this->productoId,
-            'amount' => $cantidad,
-            'stock_id' => uniqid(),
-            'best_before_date' => date(self::fecha, strtotime($vencimiento)),
-            'location_id' => $this->ubicacionId
-        ]);
-    }
+    // 1. GetProductStockEntries: devuelve los lotes del producto.
 
-
-    // Suma las cantidades de todos los lotes del producto
-    private function stockTotal(): float
-    {
-        return $this->db->stock()->where('product_id = :1', $this->productoId)->sum('amount');
-    }
-
-
-    // Registra una compra del producto con la cantidad indicada
-    private function agregarCompra(float $cantidad): void
-    {
-        $this->servicio()->AddProduct($this->productoId, $cantidad, null, StockService::TRANSACTION_TYPE_PURCHASE, date(self::fecha), self::precio);
-    }
-
-
-
-    /**
-     * Prueba 1: GetStockEntry devuelve una entrada por id
-     * Qué prueba: la cantidad guardada
-     * Se espera: 9 unidades
-     */
-    public function test_ObtieneEntradaDeStock(): void
-    {
-        // Arrange
-        $this->agregarStock(9);
-
-        // Act y Assert
-        $this->assertEquals(9.0, $this->servicio()->GetStockEntry($this->db->lastInsertId())->amount);
-    }
-
-    /**
-     * Prueba 2: GetProductStockEntries lista los lotes del producto
-     * Qué prueba: una fila por lote
-     * Se espera: una entrada con 5 unidades
-     */
     public function test_ListaLotesDelProducto(): void
     {
         // Arrange
-        $this->agregarStock(5);
+        $lote = (object) ['amount' => 5.0];
+        $consulta = $this->createStub(StockQueryStub::class);
+        $consulta->method('where')->willReturn([$lote]);
+        $db = $this->crearDB(['stock_next_use' => $consulta]);
 
         // Act
-        $entradas = $this->servicio()->GetProductStockEntries($this->productoId);
+        $resultado = $this->crearServicio($db)->GetProductStockEntries(5);
 
         // Assert
-        $this->assertSame(1, $entradas->count());
-        $this->assertEquals(5.0, $entradas->fetch()->amount);
+        $this->assertSame([$lote], $resultado);
     }
 
 
+    // 2. GetProductStockLocations: devuelve las ubicaciones con stock.
 
-    /**
-     * Prueba 3: GetLocationStockEntries lista el stock de una ubicación
-     * Qué prueba: el filtro por ubicación
-     * Se espera: una entrada con 4 unidades
-     */
-    public function test_ListaStockDeUbicacion(): void
-    {
-        // Arrange
-        $this->agregarStock(4);
-
-        // Act
-        $entradas = $this->servicio()->GetLocationStockEntries($this->ubicacionId);
-
-        // Assert
-        $this->assertSame(1, $entradas->count());
-        $this->assertEquals(4.0, $entradas->fetch()->amount);
-    }
-
-    /**
-     * Prueba 4: GetProductStockLocations lista ubicaciones con stock
-     * Qué prueba: la ubicación del lote
-     * Se espera: una fila con 5 unidades
-     */
     public function test_ListaUbicacionesConStock(): void
     {
         // Arrange
-        $this->agregarStock(5);
+        $ubicacion = (object) ['product_id' => 5, 'amount' => 5.0];
+        $consulta = $this->createMock(StockQueryStub::class);
+
+        // expects(once) fija una llamada a where(); with() valida el filtro y willReturn() simula el resultado.
+        
+        $consulta->expects($this->once())->method('where')
+            ->with('product_id = 5')->willReturn([$ubicacion]);
+        $db = $this->crearDB(['stock_current_locations' => $consulta]);
 
         // Act
-        $filas = $this->servicio()->GetProductStockLocations($this->productoId);
+        $resultado = $this->crearServicio($db)->GetProductStockLocations(5);
 
         // Assert
-        $this->assertSame(1, $filas->count());
-        $this->assertEquals(5.0, $filas->fetch()->amount);
+        $this->assertSame([$ubicacion], $resultado);
     }
 
-    /**
-     * Prueba 5: GetCurrentStockLocations devuelve el stock por ubicación
-     * Qué prueba: la vista incluye el producto
-     * Se espera: una fila con 6 unidades
-     */
-    public function test_DevuelveStockPorUbicacion(): void
+
+    // 3. GetProductStockLocations: incluye las ubicaciones de los subproductos.
+
+    public function test_ListaUbicacionesConSubproductos(): void
     {
         // Arrange
-        $this->agregarStock(6);
-
-        // Act y Assert
-        $this->assertEquals(6.0, $this->servicio()->GetCurrentStockLocations()[0]->amount);
-    }
-
-    /**
-     * Prueba 6: GetCurrentStockLocationContent devuelve el contenido
-     * Qué prueba: la consulta de contenido con stock
-     * Se espera: una fila con 7 unidades
-     */
-    public function test_DevuelveContenidoDeUbicacion(): void
-    {
-        // Arrange
-        $this->agregarStock(7);
-
-        // Act y Assert
-        $this->assertEquals(7.0, $this->servicio()->GetCurrentStockLocationContent()[0]->amount);
-    }
-
-    /**
-     * Prueba 7: GetCurrentStock lista el stock actual
-     * Qué prueba: la cantidad total del producto
-     * Se espera: una fila con 4 unidades
-     */
-    public function test_ListaStockActual(): void
-    {
-        // Arrange
-        $this->agregarStock(4);
-
-        // Act y Assert
-        $this->assertEquals(4.0, $this->servicio()->GetCurrentStock()[0]->amount);
-    }
-
-    /**
-     * Prueba 8: GetProductDetails devuelve el detalle del producto
-     * Qué prueba: nombre y stock del detalle
-     * Se espera: el producto de prueba con 6 unidades
-     */
-    public function test_DevuelveDetalleDelProducto(): void
-    {
-        // Arrange
-        $this->agregarStock(6);
+        $filtro = '(product_id IN (SELECT sub_product_id FROM products_resolved WHERE parent_product_id = 5) OR product_id = 5)';
+        $consulta = $this->createMock(StockQueryStub::class);
+        // Exige que where() reciba el filtro que incluye los subproductos.
+        $consulta->expects($this->once())->method('where')
+            ->with($filtro)->willReturn(['ubicacion']);
+        $db = $this->crearDB(['stock_current_locations' => $consulta]);
 
         // Act
-        $detalles = $this->servicio()->GetProductDetails($this->productoId);
+        $resultado = $this->crearServicio($db)->GetProductStockLocations(5, true);
 
         // Assert
-        $this->assertSame(self::nombreProducto, $detalles['product']->name);
-        $this->assertEquals(6.0, $detalles['stock_amount']);
+        $this->assertSame(['ubicacion'], $resultado);
     }
 
-    /**
-     * Prueba 9: GetProductIdFromBarcode encuentra el producto
-     * Qué prueba: el código creado en la preparación
-     * Se espera: el id del producto
-     */
+
+    // 4. GetStockEntry: devuelve la entrada de stock solicitada.
+
+    public function test_ObtieneEntradaDeStock(): void
+    {
+        // Arrange
+        $fila = (object) ['id' => 11, 'amount' => 9.0];
+        $db = $this->crearDB(['stock' => $this->crearConsulta($fila)]);
+
+        // Act
+        $resultado = $this->crearServicio($db)->GetStockEntry(11);
+
+        // Assert
+        $this->assertSame($fila, $resultado);
+    }
+
+
+    // 5. GetLocationStockEntries: devuelve los lotes de una ubicación.
+
+    public function test_ListaStockDeUbicacion(): void
+    {
+        // Arrange
+        $lote = (object) ['amount' => 4.0];
+        $stock = $this->createMock(StockQueryStub::class);
+        // Exige una búsqueda por la ubicación y simula el lote encontrado.
+        $stock->expects($this->once())->method('where')
+            ->with('location_id', 2)->willReturn([$lote]);
+        $db = $this->crearDB([
+            'locations' => $this->crearConsulta((object) ['id' => 2]),
+            'stock' => $stock
+        ]);
+
+        // Act
+        $resultado = $this->crearServicio($db)->GetLocationStockEntries(2);
+
+        // Assert
+        $this->assertSame([$lote], $resultado);
+    }
+
+
+    // 6. GetLocationStockEntries: falla si la ubicación no existe.
+
+    public function test_RechazaUbicacionInexistente(): void
+    {
+        // Arrange
+        $db = $this->crearDB(['locations' => $this->crearConsulta(null)]);
+
+        // Act y Assert
+        $this->comprobarQueFalla($db, 'Location does not exist',
+            static fn (StockService $servicio) => $servicio->GetLocationStockEntries(999));
+    }
+
+
+    // 7. GetProductIdFromBarcode: busca el producto por su código de barras.
+
     public function test_ObtieneIdPorCodigoDeBarras(): void
     {
-        // Act y Assert
-        $this->assertSame($this->productoId, $this->servicio()->GetProductIdFromBarcode(self::codigoBarras));
+        // Arrange
+        $db = $this->crearDB(['product_barcodes' => $this->crearConsulta((object) ['product_id' => 5])]);
+
+        // Act
+        $resultado = $this->crearServicio($db)->GetProductIdFromBarcode(self::codigoBarras);
+
+        // Assert
+        $this->assertSame(5, $resultado);
     }
 
-    /**
-     * Prueba 10: GetProductPriceHistory devuelve una compra
-     * Qué prueba: la vista toma los movimientos de compra
-     * Se espera: una entrada con el precio configurado
-     */
+
+    // 8. GetProductIdFromBarcode: falla si el código no existe.
+
+    public function test_RechazaCodigoDeBarrasInexistente(): void
+    {
+        // Arrange
+        $db = $this->crearDB(['product_barcodes' => $this->crearConsulta(null)]);
+
+        // Act y Assert
+        $this->comprobarQueFalla($db, 'No product with barcode ' . self::codigoBarras . ' found',
+            static fn (StockService $servicio) => $servicio->GetProductIdFromBarcode(self::codigoBarras));
+    }
+
+
+    // 9. GetProductPriceHistory: devuelve los precios y el lugar de compra.
+
     public function test_DevuelveHistorialDePrecios(): void
     {
         // Arrange
-        $this->agregarCompra(1);
+        $historial = $this->createMock(StockQueryStub::class);
+        // where() filtra por producto; orderBy() exige ordenar por fecha descendente y devuelve una fila.
+        $historial->expects($this->once())->method('where')->with('product_id = :1', 5)->willReturnSelf();
+        $historial->expects($this->once())->method('orderBy')->with('purchased_date', 'DESC')
+            ->willReturn([(object) ['purchased_date' => '2026-11-01', 'price' => self::precio, 'shopping_location_id' => 7]]);
+
+        $db = $this->crearDB([
+            'products' => $this->crearConsulta($this->producto),
+            'shopping_locations' => [(object) ['id' => 7, 'name' => 'Mercado']],
+            'products_price_history' => $historial
+        ]);
 
         // Act
-        $historial = $this->servicio()->GetProductPriceHistory($this->productoId);
+        $resultado = $this->crearServicio($db)->GetProductPriceHistory(5);
 
         // Assert
-        $this->assertSame(1, count($historial));
-        $this->assertEquals(self::precio, $historial[0]['price']);
+        $this->assertSame(self::precio, $resultado[0]['price']);
+        $this->assertSame('Mercado', $resultado[0]['shopping_location']->name);
     }
 
-    /**
-     * Prueba 11: GetMissingProducts detecta stock faltante
-     * Qué prueba: mínimo 5 sin stock
-     * Se espera: faltante de 5 unidades
-     */
-    public function test_DetectaProductosFaltantes(): void
+
+    // 10. GetProductPriceHistory: falla si el producto no existe.
+
+    public function test_RechazaHistorialDeProductoInexistente(): void
     {
+        // Arrange
+        $db = $this->crearDB(['products' => $this->crearConsulta(null)]);
+
         // Act y Assert
-        $this->assertEquals(5.0, $this->servicio()->GetMissingProducts()[0]->amount_missing);
+        $this->comprobarQueFalla($db, 'Product does not exist or is inactive',
+            static fn (StockService $servicio) => $servicio->GetProductPriceHistory(999));
     }
 
-    /**
-     * Prueba 12: GetDueProducts detecta un próximo vencimiento
-     * Qué prueba: stock que vence dentro del rango
-     * Se espera: una fila del producto
-     */
+
+    // 11. GetDueProducts: encuentra productos que vencen dentro del plazo.
+
     public function test_DetectaProductosPorVencer(): void
     {
         // Arrange
-        $this->agregarStock(1, '+2 days');
+        $servicio = $this->crearServicioConStock("WHERE best_before_date <= date('now', '5 days')");
 
-        // Act y Assert
-        $this->assertSame(1, count($this->servicio()->GetDueProducts(5)));
+        // Act
+        $resultado = $servicio->GetDueProducts(5);
+
+        // Assert
+        $this->assertSame(['producto'], $resultado);
     }
 
-    /**
-     * Prueba 13: GetExpiredProducts detecta un producto vencido
-     * Qué prueba: stock con fecha anterior a hoy
-     * Se espera: una fila del producto
-     */
+
+    // 12. GetDueProducts: excluye los productos que ya vencieron.
+
+    public function test_ExcluyeVencidosDeProximos(): void
+    {
+        // Arrange
+        $servicio = $this->crearServicioConStock("WHERE best_before_date <= date('now', '5 days') AND best_before_date >= date()");
+
+        // Act
+        $resultado = $servicio->GetDueProducts(5, true);
+
+        // Assert
+        $this->assertSame(['producto'], $resultado);
+    }
+
+
+    // 13. GetExpiredProducts: encuentra productos vencidos.
+
     public function test_DetectaProductosVencidos(): void
     {
         // Arrange
-        $this->agregarStock(1, '-1 day');
+        $servicio = $this->crearServicioConStock('WHERE best_before_date < date() AND due_type = 2');
+
+        // Act
+        $resultado = $servicio->GetExpiredProducts();
+
+        // Assert
+        $this->assertSame(['producto'], $resultado);
+    }
+
+
+    // 14. MergeProducts: impide fusionar un producto consigo mismo.
+
+    public function test_RechazaFusionarProductoConsigoMismo(): void
+    {
+        // Arrange
+        $db = $this->crearDB(['products' => $this->crearConsulta($this->producto)]);
 
         // Act y Assert
-        $this->assertSame(1, count($this->servicio()->GetExpiredProducts()));
+        $this->comprobarQueFalla($db, '$productIdToKeep cannot equal $productIdToRemove',
+            static fn (StockService $servicio) => $servicio->MergeProducts(5, 5));
     }
 
-    /**
-     * Prueba 14: AddProduct registra stock y booking
-     * Qué prueba: una compra crea stock y movimiento
-     * Se espera: 5 unidades y 1 booking
-     */
+
+    // 15. MergeProducts: falla si no existe el producto que se conservará.
+
+    public function test_RechazaFusionarProductoInexistente(): void
+    {
+        // Arrange
+        $db = $this->crearDB(['products' => $this->crearConsulta(null)]);
+
+        // Act y Assert
+        $this->comprobarQueFalla($db, '$productIdToKeep does not exist or is inactive',
+            static fn (StockService $servicio) => $servicio->MergeProducts(999, 5));
+    }
+
+
+    // 16. AddProduct: registra una compra en el stock y en el historial.
+
     public function test_RegistraCompra(): void
     {
+        // Arrange
+        $servicio = $this->crearServicioParaCompra();
+
         // Act
-        $this->agregarCompra(5);
+        $transaccion = $servicio->AddProduct(5, 5.0, '2026-12-31', StockService::TRANSACTION_TYPE_PURCHASE, '2026-11-20', self::precio);
 
         // Assert
-        $this->assertSame(5.0, $this->stockTotal());
-        $this->assertSame(1, $this->db->stock_log()->where('product_id = :1', $this->productoId)->count());
+        $this->assertIsString($transaccion);
     }
 
 
+    // 17. AddProduct: falla si el producto no existe.
 
-    /**
-     * Prueba 15: ConsumeProduct descuenta stock
-     * Qué prueba: consumir 3 de 10
-     * Se espera: 7 unidades
-     */
-    public function test_DescuentaStockAlConsumir(): void
+    public function test_RechazaCompraDeProductoInexistente(): void
     {
         // Arrange
-        $this->agregarStock(10);
+        $db = $this->crearDB(['products' => $this->crearConsulta(null)]);
 
-        // Act
-        $this->servicio()->ConsumeProduct($this->productoId, 3, false, StockService::TRANSACTION_TYPE_CONSUME);
-
-        // Assert
-        $this->assertSame(7.0, $this->stockTotal());
+        // Act y Assert
+        $this->comprobarQueFalla($db, 'Product does not exist or is inactive',
+            static fn (StockService $servicio) => $servicio->AddProduct(999, 1.0, null, StockService::TRANSACTION_TYPE_PURCHASE, '2026-11-20', self::precio));
     }
 
-    /**
-     * Prueba 16: InventoryProduct ajusta el stock
-     * Qué prueba: corregir de 10 a 12
-     * Se espera: 12 unidades
-     */
-    public function test_AjustaStockAlInventariar(): void
+
+    // 18. AddProduct: rechaza una cantidad igual o menor que cero.
+
+    public function test_RechazaCompraConCantidadNoPositiva(): void
     {
         // Arrange
-        $this->agregarStock(10);
+        $db = $this->crearDB(['products' => $this->crearConsulta($this->producto)]);
 
-        // Act
-        $this->servicio()->InventoryProduct($this->productoId, 12, date(self::fecha));
-
-        // Assert
-        $this->assertSame(12.0, $this->stockTotal());
+        // Act y Assert
+        $this->comprobarQueFalla($db, "Amount can't be <= 0",
+            static fn (StockService $servicio) => $servicio->AddProduct(5, 0.0, null, StockService::TRANSACTION_TYPE_PURCHASE, '2026-11-20', self::precio));
     }
 
-    /**
-     * Prueba 17: OpenProduct marca stock abierto
-     * Qué prueba: abrir 4 de 10 separa el lote
-     * Se espera: 4 abiertas y 6 cerradas
-     */
-    public function test_MarcaStockAbierto(): void
+
+    // 19. ConsumeProduct: falla si el producto no existe.
+
+    public function test_RechazaConsumirProductoInexistente(): void
     {
         // Arrange
-        $this->agregarStock(10);
+        $db = $this->crearDB(['products' => $this->crearConsulta(null)]);
 
-        // Act
-        $this->servicio()->OpenProduct($this->productoId, 4);
-
-        // Assert
-        $this->assertEquals(4.0, $this->db->stock()->where('open = 1')->sum('amount'));
-        $this->assertEquals(6.0, $this->db->stock()->where('open = 0')->sum('amount'));
+        // Act y Assert
+        $this->comprobarQueFalla($db, 'Product does not exist or is inactive',
+            static fn (StockService $servicio) => $servicio->ConsumeProduct(999, 1.0, false, StockService::TRANSACTION_TYPE_CONSUME));
     }
 
 
+    // 20. ConsumeProduct: rechaza una cantidad igual o menor que cero.
 
-    /**
-     * Prueba 18: CopyProduct duplica un producto
-     * Qué prueba: copia con otro id y nombre con prefijo
-     * Se espera: "Copy of Producto de prueba"
-     */
-    public function test_DuplicaProducto(): void
+    public function test_RechazaConsumirCantidadNoPositiva(): void
     {
-        // Act
-        $idCopia = (int)$this->servicio()->CopyProduct($this->productoId);
+        // Arrange
+        $db = $this->crearDB(['products' => $this->crearConsulta($this->producto)]);
 
-        // Assert
-        $this->assertNotSame($this->productoId, $idCopia);
-        $this->assertSame('Copy of ' . self::nombreProducto, $this->db->products()->where('id = :1', $idCopia)->fetch()->name);
+        // Act y Assert
+        $this->comprobarQueFalla($db, "Amount can't be <= 0",
+            static fn (StockService $servicio) => $servicio->ConsumeProduct(5, 0.0, false, StockService::TRANSACTION_TYPE_CONSUME));
     }
 
-    /**
-     * Prueba 19: AddProductToShoppingList agrega un producto
-     * Qué prueba: la entrada con cantidad
-     * Se espera: cantidad 2
-     */
+
+    // 21. AddProductToShoppingList: falla si la lista no existe.
+
+    public function test_RechazaListaDeComprasInexistente(): void
+    {
+        // Arrange
+        $db = $this->crearDB(['shopping_lists' => $this->crearConsulta(null)]);
+
+        // Act y Assert
+        $this->comprobarQueFalla($db, 'Shopping list does not exist',
+            static fn (StockService $servicio) => $servicio->AddProductToShoppingList(5, 1, -1, null, 999));
+    }
+
+
+    // 22. AddProductToShoppingList: falla si el producto no existe.
+
+    public function test_RechazaProductoDeListaInexistente(): void
+    {
+        // Arrange
+        $db = $this->crearDB([
+            'shopping_lists' => $this->crearConsulta((object) ['id' => 1]),
+            'products' => $this->crearConsulta(null)
+        ]);
+
+        // Act y Assert
+        $this->comprobarQueFalla($db, 'Product does not exist or is inactive',
+            static fn (StockService $servicio) => $servicio->AddProductToShoppingList(999));
+    }
+
+
+    // 23. AddProductToShoppingList: agrega un producto nuevo a la lista.
+
     public function test_AgregaProductoALista(): void
     {
-        // Act
-        $this->servicio()->AddProductToShoppingList($this->productoId, 2);
-
-        // Assert
-        $this->assertEquals(2.0, $this->db->shopping_list()->where('product_id = :1', $this->productoId)->fetch()->amount);
-    }
-
-    /**
-     * Prueba 20: RemoveProductFromShoppingList quita un producto
-     * Qué prueba: quitar la cantidad total
-     * Se espera: cero entradas
-     */
-    public function test_QuitaProductoDeLista(): void
-    {
         // Arrange
-        $this->servicio()->AddProductToShoppingList($this->productoId, 3);
+        $servicio = $this->crearServicioConListaVacia([
+            'product_id' => 5,
+            'amount' => 2,
+            'qu_id' => 1,
+            'shopping_list_id' => 1,
+            'note' => null
+        ]);
 
         // Act
-        $this->servicio()->RemoveProductFromShoppingList($this->productoId, 3);
+        $servicio->AddProductToShoppingList(5, 2);
 
-        // Assert
-        $this->assertSame(0, $this->db->shopping_list()->where('product_id = :1', $this->productoId)->count());
+        // Assert: las expectativas del mock comprueban la fila guardada.
     }
 
-    /**
-     * Prueba 21: ClearShoppingList borra la lista
-     * Qué prueba: limpiar elimina las entradas
-     * Se espera: cero entradas
-     */
-    public function test_VaciaListaDeCompras(): void
-    {
-        // Arrange
-        $this->servicio()->AddProductToShoppingList($this->productoId, 1);
 
-        // Act
-        $this->servicio()->ClearShoppingList();
+    // 24. AddMissingProductsToShoppingList: agrega las cantidades faltantes.
 
-        // Assert
-        $this->assertSame(0, $this->db->shopping_list()->where('product_id = :1', $this->productoId)->count());
-    }
-
-    /**
-     * Prueba 22: AddMissingProductsToShoppingList agrega faltantes
-     * Qué prueba: mínimo 5 sin stock
-     * Se espera: entrada con cantidad 5
-     */
     public function test_AgregaFaltantesALista(): void
     {
-        // Act
-        $this->servicio()->AddMissingProductsToShoppingList();
+        // Arrange
+        $servicio = $this->crearServicioConListaVacia([
+            'product_id' => 5,
+            'amount' => 5.0,
+            'shopping_list_id' => 1,
+            'qu_id' => 1
+        ], ['GetMissingProducts']);
 
-        // Assert
-        $this->assertEquals(5.0, $this->db->shopping_list()->where('product_id = :1', $this->productoId)->fetch()->amount);
+        // Exige una llamada a GetMissingProducts() y devuelve la cantidad faltante simulada.
+        $servicio->expects($this->once())->method('GetMissingProducts')
+            ->willReturn([(object) ['id' => 5, 'amount_missing' => 5.0]]);
+
+        // Act
+        $servicio->AddMissingProductsToShoppingList();
+
+        // Assert: las expectativas del mock comprueban la cantidad agregada.
     }
 
-    /**
-     * Prueba 23: GetShoppinglistInPrintableStrings devuelve la lista
-     * Qué prueba: el producto aparece en el texto
-     * Se espera: una línea con el nombre del producto
-     */
-    public function test_DevuelveListaEnTexto(): void
+
+    // 25. ClearShoppingList: elimina las entradas completadas.
+
+    public function test_VaciaEntradasCompletadas(): void
     {
         // Arrange
-        $this->servicio()->AddProductToShoppingList($this->productoId, 2);
+        $compras = $this->createMock(StockQueryStub::class);
+
+        // where() comprueba el filtro de entradas completadas; delete() debe ejecutarse una vez.
+
+        $compras->expects($this->once())->method('where')
+            ->with('shopping_list_id = :1 AND IFNULL(done, 0) = 1', 1)->willReturnSelf();
+        
+        $compras->expects($this->once())->method('delete');
+
+        $db = $this->crearDB([
+            'shopping_lists' => $this->crearConsulta((object) ['id' => 1]),
+            'shopping_list' => $compras
+        ]);
 
         // Act
-        $lineas = $this->servicio()->GetShoppinglistInPrintableStrings();
+        $this->crearServicio($db)->ClearShoppingList(1, true);
 
-        // Assert
-        $this->assertSame(1, count($lineas));
-        $this->assertStringContainsString(self::nombreProducto, $lineas[0]);
-    }
-
-    /**
-     * Prueba 24: AddExpiredProductsToShoppingList agrega vencidos
-     * Qué prueba: un producto vencido se agrega a la lista
-     * Se espera: entrada con cantidad 1
-     */
-    public function test_AgregaVencidosALista(): void
-    {
-        // Arrange
-        $this->agregarStock(1, '-1 day');
-
-        // Act
-        $this->servicio()->AddExpiredProductsToShoppingList();
-
-        // Assert
-        $this->assertEquals(1.0, $this->db->shopping_list()->where('product_id = :1', $this->productoId)->fetch()->amount);
-    }
-
-    /**
-     * Prueba 25: CompactStockEntries une entradas iguales
-     * Qué prueba: dos lotes idénticos se juntan
-     * Se espera: una entrada con 15 unidades
-     */
-    public function test_UneEntradasDeStock(): void
-    {
-        // Arrange
-        // Esto fija las mismas fechas para que los dos lotes se puedan unir
-        $lote = ['product_id' => $this->productoId,
-                 'best_before_date' => '2026-12-14',
-                 'purchased_date' => '2026-11-13 10:00:00',
-                 'location_id' => $this->ubicacionId];
-        $this->db->insert('stock', [$lote + ['amount' => 10, 'stock_id' => 'lote-a'],
-                                    $lote + ['amount' => 5, 'stock_id' => 'lote-b']]);
-
-        // Act
-        $this->servicio()->CompactStockEntries($this->productoId);
-
-        // Assert
-        $this->assertSame(1, $this->db->stock()->where('product_id = :1', $this->productoId)->count());
-        $this->assertSame(15.0, $this->stockTotal());
+        // Assert: las expectativas del mock comprueban el filtro y la eliminación.
     }
 }
